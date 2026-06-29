@@ -1,0 +1,4 @@
+Name,Asset Type,Serial Number,Asset Code,Purchase Date,Purchase Cost,Status,Condition,Description,Location,Supplier,Warranty Info,Warranty Expiry Date
+TP-Link Wireless Router,Network Equipment,TP001,NET002,2025-01-15,8000,assigned,good,Standard Network Equipment for business operations,Main Office,Tech Solutions Pvt Ltd,2 Year Manufacturer Warranty,2027-01-15
+Cisco Catalyst Switch,Network Equipment,CS001,NET001,2025-01-15,75000,assigned,new,Standard Network Equipment for business operations,Main Office,Tech Solutions Pvt Ltd,2 Year Manufacturer Warranty,2027-01-15
+Honda City 2022,Vehicles,HC001,VEH002,2025-01-15,1800000,available,good,Standard Vehicles for business operations,Main Office,Tech Solutions Pvt Ltd,2 Year Manufacturer Warranty,2027-01-15

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Play, Calendar, ChevronRight, Star, Users, User, Globe, Clock, ShieldCheck, Hexagon, Cloud, Waves, Aperture, CheckCircle } from 'lucide-react';
+import { ArrowRight, Play, Calendar, ChevronRight, Star, Users, User, Globe, Clock, ShieldCheck, Hexagon, Cloud, Waves, Aperture } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getImagePath, isUserRegistrationEnabled, getCookie, isDemoMode } from '@/utils/helpers';
 import DynamicTitle from './DynamicTitle';
@@ -163,59 +163,18 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
     'mx-auto'; // center (default)
 
   const imageContent = imagePosition === 'background' ? null : (
-    <div className={`relative ${imageAlignClass} w-full mt-10 lg:mt-0`} style={{ perspective: '1200px' }}>
+    <div className={`relative ${imageAlignClass} w-full mt-10 lg:mt-0`}>
       {/* Decorative Dots */}
-      <div className="absolute top-10 -right-4 w-32 h-32 opacity-20 z-0 hidden lg:block animate-pulse" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px' }}></div>
-      <div className="absolute -bottom-6 -left-6 w-32 h-32 opacity-20 z-0 hidden lg:block animate-[pulse_3s_ease-in-out_infinite]" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px', animationDelay: '1s' }}></div>
+      <div className="absolute top-10 -right-4 w-32 h-32 opacity-20 z-0 hidden lg:block" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px' }}></div>
+      <div className="absolute -bottom-6 -left-6 w-32 h-32 opacity-20 z-0 hidden lg:block" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px' }}></div>
+      {/* Subtle Glow */}
+      <div className="absolute inset-0 z-0 opacity-[0.08] blur-[80px] rounded-full pointer-events-none" style={{ backgroundColor: brandColor, transform: 'scale(0.85)' }}></div>
       
-      {/* Enhanced Multi-layer Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] z-0 opacity-20 blur-[100px] rounded-full pointer-events-none transition-all duration-700" style={{ backgroundColor: brandColor }}></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] z-0 opacity-30 blur-[60px] rounded-full pointer-events-none mix-blend-overlay" style={{ backgroundColor: brandColor }}></div>
-      
-      {/* 3D Container */}
-      <div className="relative z-10 w-full transition-transform duration-700 hover:scale-[1.02] transform-gpu group" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(6deg) rotateY(-8deg)' }}>
-        
-        {/* Main Product Image with intense shadow */}
-        <div className="relative shadow-[0_30px_60px_rgba(0,0,0,0.25)] group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.3)] transition-shadow duration-700 rounded-2xl">
-          <img
-            src={heroImage || defaultImage}
-            alt="Hero"
-            className="w-full h-auto relative rounded-2xl"
-          />
-        </div>
-
-        {/* Floating Element 1: Top Left */}
-        <div 
-          className="absolute -top-6 -left-4 md:-top-8 md:-left-12 lg:-left-16 bg-white/80 backdrop-blur-md border border-white/60 shadow-xl rounded-2xl p-3 md:p-4 flex items-center gap-3 md:gap-4 animate-[bounce_4s_infinite] pointer-events-none z-20"
-          style={{ transform: 'translateZ(60px)' }}
-        >
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white shrink-0" style={{ backgroundColor: brandColor }}>
-            <Users size={20} className="md:w-6 md:h-6" />
-          </div>
-          <div>
-            <p className="text-xs md:text-sm font-bold text-gray-900 leading-tight">New Candidates</p>
-            <p className="text-[10px] md:text-xs font-semibold text-green-500 flex items-center gap-1 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-              +124 This Week
-            </p>
-          </div>
-        </div>
-
-        {/* Floating Element 2: Bottom Right */}
-        <div 
-          className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-10 lg:-right-12 bg-white/90 backdrop-blur-md border border-white/60 shadow-2xl rounded-2xl p-3 md:p-4 flex items-center gap-3 md:gap-4 animate-[bounce_5s_infinite_1s] pointer-events-none z-20"
-          style={{ transform: 'translateZ(80px)' }}
-        >
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center text-white shrink-0" style={{ backgroundColor: brandColor }}>
-            <CheckCircle size={18} className="md:w-5 md:h-5" />
-          </div>
-          <div>
-            <p className="text-xs md:text-sm font-bold text-gray-900 leading-tight">Payroll Processed</p>
-            <p className="text-[10px] md:text-xs text-gray-500 mt-0.5">Just now</p>
-          </div>
-        </div>
-        
-      </div>
+      <img
+        src={heroImage || defaultImage}
+        alt="Hero"
+        className="w-full h-auto z-10 relative drop-shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
+      />
     </div>
   );
 

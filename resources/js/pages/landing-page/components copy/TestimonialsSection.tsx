@@ -192,7 +192,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
   const nextT = displayTestimonials[mod(index + 1, count)];
 
   return (
-    <section className="py-12 sm:py-20 bg-[#f1f5f9] relative overflow-hidden" ref={ref}>
+    <section className="py-16 sm:py-24 bg-[#f1f5f9] relative overflow-hidden" ref={ref}>
 
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40 z-0">
         <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-indigo-200 blur-[120px] rounded-full"></div>
@@ -201,7 +201,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
 
-        <div className={`text-center mb-4 lg:mb-6 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mb-6 lg:mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-full mb-3 border border-indigo-100">
             <MessageCircle className="w-3.5 h-3.5 text-indigo-600" fill="currentColor" />
             <span className="text-[11px] font-bold text-indigo-600 tracking-wide">{t('CLIENT LOVE')}</span>
@@ -324,26 +324,26 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
         </div>
 
         {/* Bottom Trust Banner */}
-        <div className={`bg-white rounded-[24px] p-6 lg:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col lg:flex-row items-center justify-between gap-8 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`bg-white rounded-[24px] p-5 lg:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col lg:flex-row items-center justify-between gap-6 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 lg:w-1/3">
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 relative overflow-hidden mx-auto sm:mx-0">
+          <div className="flex items-center gap-4 lg:w-1/3">
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 relative overflow-hidden">
                <Shield className="w-6 h-6 text-indigo-500" fill="currentColor" />
                <Star className="w-2.5 h-2.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[60%]" fill="currentColor" />
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-tight mb-2">
-                {t('Trusted by')} {t('HR Professionals Worldwide')}
+              <h3 className="text-lg font-bold text-gray-900 leading-tight mb-1">
+                {t('Trusted by')}<br />{t('HR Professionals Worldwide')}
               </h3>
-              <p className="text-[13px] text-gray-500 leading-relaxed max-w-[280px] mx-auto sm:mx-0">
+              <p className="text-[12px] text-gray-500 leading-relaxed max-w-[280px]">
                 {t('Join hundreds of organizations that rely on dotHRM to build better workplaces and stronger teams.')}
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-row items-start sm:items-center gap-y-6 gap-x-2 sm:gap-6 lg:gap-8 lg:pl-6 lg:border-l border-gray-100 flex-1 justify-center lg:justify-end w-full lg:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-6 lg:gap-8 lg:pl-6 lg:border-l border-gray-100 flex-1 justify-center lg:justify-end w-full lg:w-auto">
 
-            <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0">
                 <Star className="w-4 h-4 text-purple-500" fill="currentColor" />
               </div>
@@ -356,7 +356,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0">
                 <Briefcase className="w-4 h-4 text-green-500" fill="currentColor" />
               </div>
@@ -367,7 +367,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
               </div>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 mx-auto sm:mx-0 flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-3">
+            <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
                 <Users className="w-4 h-4 text-orange-500" fill="currentColor" />
               </div>

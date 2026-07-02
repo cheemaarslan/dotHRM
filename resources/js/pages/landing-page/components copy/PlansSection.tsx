@@ -168,11 +168,11 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
   ];
 
   return (
-    <section id="pricing" className={`py-10 sm:py-12 relative overflow-hidden min-h-screen flex flex-col justify-center ${isDark ? 'bg-gray-900' : 'bg-white'}`} ref={ref}>
+    <section id="pricing" className={`py-12 sm:py-16 relative overflow-hidden min-h-screen flex flex-col justify-center ${isDark ? 'bg-gray-900' : 'bg-white'}`} ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
         {/* Header Section */}
-        <div className={`text-center mb-6 lg:mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mb-8 lg:mb-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold tracking-wide mb-4">
             <BadgePercent className="w-3.5 h-3.5" />
             {t('SIMPLE PRICING')}

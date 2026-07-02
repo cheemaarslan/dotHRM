@@ -110,8 +110,8 @@ export default function WhyChooseUs({ settings, sectionData, brandColor = '#3b82
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
-          {/* Left Content (Now on Right) */}
-          <div className={`lg:order-last transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          {/* Left Content */}
+          <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full text-xs font-bold tracking-wider mb-4">
               <div className="bg-blue-600 text-white p-0.5 rounded-full">
                 <Star className="w-3 h-3 fill-current" />
@@ -155,8 +155,8 @@ export default function WhyChooseUs({ settings, sectionData, brandColor = '#3b82
             </div>
           </div>
 
-          {/* Right Content - Light Card (Now on Left) */}
-          <div className={`lg:order-first bg-[#f8fafc] rounded-[2.5rem] p-6 sm:p-8 relative overflow-hidden transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          {/* Right Content - Light Card */}
+          <div className={`bg-[#f8fafc] rounded-[2.5rem] p-6 sm:p-8 relative overflow-hidden transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             
             <div className="relative z-10 flex flex-col items-center text-center mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight max-w-[400px] mx-auto">

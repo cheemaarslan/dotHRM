@@ -82,7 +82,19 @@ createInertiaApp({
                     <LayoutProvider>
                         <SidebarProvider>
                             <BrandProvider globalSettings={currentGlobalSettings} user={user}>
-                                <Suspense fallback={<div className="flex h-screen w-full items-center justify-center">Loading...</div>}>
+                                <Suspense fallback={
+                                    <div className="flex flex-col h-screen w-full items-center justify-center bg-[#fafbfc]">
+                                        <div className="relative flex items-center justify-center w-20 h-20 mb-6">
+                                            <div className="absolute inset-0 rounded-full border-[3px] border-indigo-100 border-t-indigo-600 animate-spin"></div>
+                                            <div className="absolute inset-2 rounded-full border-[3px] border-blue-100 border-b-blue-500 animate-[spin_1.5s_linear_infinite_reverse]"></div>
+                                            <div className="absolute inset-4 rounded-full border-[3px] border-emerald-100 border-l-emerald-500 animate-[spin_2s_linear_infinite]"></div>
+                                            <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></div>
+                                        </div>
+                                        <div className="text-sm font-bold text-gray-500 tracking-[0.2em] uppercase animate-pulse">
+                                            Loading...
+                                        </div>
+                                    </div>
+                                }>
                                     <App {...appProps} />
                                 </Suspense>
                                 <CustomToast />

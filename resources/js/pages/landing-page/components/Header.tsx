@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { isUserRegistrationEnabled, getImagePath, getCookie, isDemoMode } from '@/utils/helpers';
 
@@ -103,8 +103,8 @@ export default function Header({ settings, sectionData, customPages = [], brandC
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderClasses()}`}
       style={getHeaderStyle()}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href={route("home")} className="flex items-center">
@@ -124,7 +124,15 @@ export default function Header({ settings, sectionData, customPages = [], brandC
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
+          <nav 
+            className={`hidden md:flex items-center space-x-12 transition-all duration-300 ${
+              !isScrolled && isTransparent
+                ? `px-10 py-3 rounded-full bg-white/60 backdrop-blur-md border border-white/60 shadow-[0_4px_30px_rgba(0,0,0,0.05)] ${isDark ? 'dark:bg-gray-900/60 dark:border-gray-700/50' : ''}`
+                : 'px-0 py-0 bg-transparent border-transparent shadow-none'
+            }`} 
+            role="navigation" 
+            aria-label="Main navigation"
+          >
             <Link
               href={route('home')}
               className="text-sm font-medium transition-colors relative group"
@@ -211,74 +219,75 @@ export default function Header({ settings, sectionData, customPages = [], brandC
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className={`md:hidden border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`} id="mobile-menu">
-            <div 
-              className={`px-4 py-6 space-y-4 ${isDark ? 'bg-gray-900' : 'bg-white'}`}
-              style={isTransparent ? {} : { backgroundColor }}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'} border-t ${isMenuOpen ? (isDark ? 'border-gray-700' : 'border-gray-100 shadow-xl') : 'border-transparent'}`} id="mobile-menu">
+          <div 
+            className={`px-4 py-5 space-y-1.5 ${isDark ? 'bg-gray-900' : 'bg-white'}`}
+            style={isTransparent && !isMenuOpen ? {} : { backgroundColor }}
+          >
+            <Link
+              href={route('home')}
+              className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-semibold transition-all duration-200 ${isDark ? 'hover:bg-gray-800 active:bg-gray-800' : 'hover:bg-slate-50 active:bg-slate-100'}`}
+              style={{ color: navTextColor }}
+              onClick={() => setIsMenuOpen(false)}
+              onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
+              onMouseLeave={(e) => e.currentTarget.style.color = navTextColor}
             >
+              <span>{t('Home')}</span>
+              <ChevronRight size={16} className="opacity-40" />
+            </Link>
+            
+            {menuItems.map((item) => (
               <Link
-                href={route('home')}
-                className="block text-base font-medium transition-colors"
+                key={item.name}
+                href={item.href}
+                className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-semibold transition-all duration-200 ${isDark ? 'hover:bg-gray-800 active:bg-gray-800' : 'hover:bg-slate-50 active:bg-slate-100'}`}
                 style={{ color: navTextColor }}
                 onClick={() => setIsMenuOpen(false)}
                 onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
                 onMouseLeave={(e) => e.currentTarget.style.color = navTextColor}
               >
-                {t('Home')}
+                <span>{item.name}</span>
+                <ChevronRight size={16} className="opacity-40" />
               </Link>
-              {menuItems.map((item) => (
+            ))}
+            
+            <div className={`mt-6 pt-5 pb-2 px-2 space-y-3 border-t ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
+              {auth?.user ? (
                 <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-base font-medium transition-colors"
-                  style={{ color: navTextColor }}
-                  onClick={() => setIsMenuOpen(false)}
-                  onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
-                  onMouseLeave={(e) => e.currentTarget.style.color = navTextColor}
+                  href={route('dashboard')}
+                  className="block w-full text-center py-3.5 rounded-xl text-[15px] font-bold transition-all border shadow-sm hover:shadow hover:-translate-y-0.5"
+                  style={getButtonStyles(false)}
+                  onMouseEnter={(e) => Object.assign(e.currentTarget.style, getButtonStyles(true))}
+                  onMouseLeave={(e) => Object.assign(e.currentTarget.style, getButtonStyles(false))}
                 >
-                  {item.name}
+                  {t('Dashboard')}
                 </Link>
-              ))}
-              <div className={`pt-4 space-y-3 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
-                {auth?.user ? (
-                  <Link
-                    href={route('dashboard')}
-                    className="block w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors border"
-                    style={getButtonStyles(false)}
-                    onMouseEnter={(e) => Object.assign(e.currentTarget.style, getButtonStyles(true))}
-                    onMouseLeave={(e) => Object.assign(e.currentTarget.style, getButtonStyles(false))}
-                  >
-                    {t('Dashboard')}
-                  </Link>
-                ) : (
-                  <>
+              ) : (
+                <>
+                  {isSaas && isUserRegistrationEnabled() && (
                     <Link
-                      href={route('login')}
-                      className="block w-full text-center py-2.5 text-sm font-medium transition-colors"
-                      style={{ color: navTextColor }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
-                      onMouseLeave={(e) => e.currentTarget.style.color = navTextColor}
+                      href={route('register')}
+                      className="block w-full text-center py-3.5 rounded-xl text-[15px] font-bold transition-all border shadow-sm hover:shadow hover:-translate-y-0.5"
+                      style={getButtonStyles(false)}
+                      onMouseEnter={(e) => Object.assign(e.currentTarget.style, getButtonStyles(true))}
+                      onMouseLeave={(e) => Object.assign(e.currentTarget.style, getButtonStyles(false))}
                     >
-                      {t('Login')}
+                      {t('Get Started')}
                     </Link>
-                    {isSaas && isUserRegistrationEnabled() && (
-                      <Link
-                        href={route('register')}
-                        className="block w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors border"
-                        style={getButtonStyles(false)}
-                        onMouseEnter={(e) => Object.assign(e.currentTarget.style, getButtonStyles(true))}
-                        onMouseLeave={(e) => Object.assign(e.currentTarget.style, getButtonStyles(false))}
-                      >
-                        {t('Get Started')}
-                      </Link>
-                    )}
-                  </>
-                )}
-              </div>
+                  )}
+                  <Link
+                    href={route('login')}
+                    className={`block w-full text-center py-3.5 rounded-xl text-[15px] font-bold transition-all border ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border-gray-200 hover:bg-gray-50'}`}
+                    style={{ color: brandColor }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t('Login')}
+                  </Link>
+                </>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

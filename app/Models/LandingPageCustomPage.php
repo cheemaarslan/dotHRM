@@ -14,12 +14,16 @@ class LandingPageCustomPage extends Model
         'meta_title',
         'meta_description',
         'is_active',
-        'sort_order'
+        'sort_order',
+        'sections',
+        'show_breadcrumb',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'sort_order' => 'integer'
+        'is_active'        => 'boolean',
+        'sort_order'       => 'integer',
+        'sections'         => 'array',
+        'show_breadcrumb'  => 'boolean',
     ];
 
     public function scopeOrdered($query)

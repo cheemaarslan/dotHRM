@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, User, ChevronDown, Lock, Users, HelpCircle, Plus, Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
 
@@ -28,8 +28,10 @@ interface ContactSectionProps {
   };
 }
 
-export default function ContactSection({ flash, settings, sectionData, brandColor = '#3b82f6' }: ContactSectionProps) {
+export default function ContactSection({ flash, settings, sectionData, brandColor = '#4f46e5' }: ContactSectionProps) {
   const { t } = useTranslation();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
@@ -56,7 +58,7 @@ export default function ContactSection({ flash, settings, sectionData, brandColo
     {
       icon: Mail,
       title: t('Email Us'),
-      content: settings?.contact_email || 'support@hrm.com',
+      content: settings?.contact_email || 'support@dothrm.com',
     },
     {
       icon: Phone,
@@ -66,173 +68,245 @@ export default function ContactSection({ flash, settings, sectionData, brandColo
     {
       icon: MapPin,
       title: t('Visit Us'),
-      content: settings?.contact_address || '123 Business Ave, Suite 100',
+      content: settings?.contact_address || 'Dubai Silicon Oasis, Dubai, UAE',
     }
-  ].filter(info => info.content); // Only show items that have content
+  ].filter(info => info.content);
+
+  const defaultFaqs = [
+    t('Can I request a live demo of dotHRM?'),
+    t('How quickly will I receive a response?'),
+    t('Do you provide onboarding and support?')
+  ];
 
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {sectionData?.title || t('Get in Touch')}
+    <section id="contact" className="py-12 sm:py-16 min-h-screen flex flex-col justify-center bg-[#fafbfc] relative overflow-hidden">
+      
+      {/* Decorative Message Image & Swirl */}
+      <div className="absolute top-[8%] lg:top-[8%] left-[2%] lg:left-[4%] hidden md:flex items-center opacity-90 pointer-events-none z-0">
+        <img 
+          src="/images/default/message.png" 
+          alt="Message Decorative" 
+          className="w-[180px] lg:w-[240px] h-auto object-contain drop-shadow-2xl" 
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        
+        {/* Header */}
+        <div className="text-center mb-8 lg:mb-10">
+          <div className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-full mb-4 border border-indigo-100">
+            <Phone className="w-3.5 h-3.5 text-indigo-500" />
+            <span className="text-[11px] font-bold text-indigo-600 tracking-wide">{t('GET IN TOUCH')}</span>
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#0f172a] mb-3 tracking-tight">
+            {sectionData?.title || t("We'd Love to Hear from You")}
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
-            {sectionData?.subtitle || t('Have questions about dotHRM? We\'d love to hear from you.. Send us a message and we\'ll respond as soon as possible.')}
+          <p className="text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            {sectionData?.subtitle || t('Have questions about dotHRM? Our team is here to help you discover how smarter HR and payroll management can transform your business.')}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
-          {/* Contact Form */}
-          <div>
-            <div className="bg-white border border-gray-200 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                {sectionData?.form_title || t('Send us a Message')}
-              </h3>
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-8 relative">
+          
+          {/* Decorative SVG behind content if needed */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-30 pointer-events-none z-0 hidden lg:block">
+            <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] bg-indigo-200/40 blur-[100px] rounded-full"></div>
+            <div className="absolute bottom-[20%] right-[-10%] w-[400px] h-[400px] bg-purple-200/40 blur-[100px] rounded-full"></div>
+          </div>
 
-              {/* {flash?.success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5" />
-                    <span>{flash.success}</span>
+          {/* Left Column: Form Card */}
+          <div className="relative z-10 flex flex-col h-full">
+            <div className="bg-white rounded-[20px] p-5 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 relative z-10 flex-1 flex flex-col">
+              
+              {/* Form Header */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 border border-indigo-100/50">
+                  <Mail className="w-4 h-4 text-indigo-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {sectionData?.form_title || t('Send Us a Message')}
+                </h3>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-4" role="form">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Name */}
+                  <div>
+                    <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
+                      {t('Full Name')} <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <User className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <input
+                        type="text"
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white transition-all shadow-sm"
+                        placeholder={t('Your full name')}
+                        required
+                        disabled={processing}
+                      />
+                    </div>
+                    {errors.name && <p className="text-red-500 text-xs mt-1.5">{errors.name}</p>}
+                  </div>
+                  {/* Email */}
+                  <div>
+                    <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
+                      {t('Email Address')} <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <input
+                        type="email"
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white transition-all shadow-sm"
+                        placeholder={t('you@email.com')}
+                        required
+                        disabled={processing}
+                      />
+                    </div>
+                    {errors.email && <p className="text-red-500 text-xs mt-1.5">{errors.email}</p>}
                   </div>
                 </div>
-              )} */}
 
-              <form onSubmit={handleSubmit} className="space-y-6" role="form" aria-label="Contact form">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('Full Name')} <span className="text-red-500" aria-label="required">*</span>
-                    </label>
+                {/* Subject */}
+                <div>
+                  <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
+                    {t('Subject')} <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
                     <input
                       type="text"
-                      id="name"
-                      value={data.name}
-                      onChange={(e) => setData('name', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                      style={{ '--tw-ring-color': brandColor } as React.CSSProperties}
-                      placeholder={t('Your full name')}
+                      value={data.subject}
+                      onChange={(e) => setData('subject', e.target.value)}
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white transition-all shadow-sm pr-10"
+                      placeholder={t("What's this about?")}
                       required
                       disabled={processing}
                     />
-                    {errors.name && (
-                      <p className="text-red-600 text-sm mt-1">{errors.name}</p>
-                    )}
+                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                    </div>
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      {t('Email Address')} <span className="text-red-500" aria-label="required">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={data.email}
-                      onChange={(e) => setData('email', e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                      style={{ '--tw-ring-color': brandColor } as React.CSSProperties}
-                      placeholder={t('your@email.com')}
-                      required
-                      disabled={processing}
-                    />
-                    {errors.email && (
-                      <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-                    )}
-                  </div>
+                  {errors.subject && <p className="text-red-500 text-xs mt-1.5">{errors.subject}</p>}
                 </div>
 
+                {/* Message */}
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('Subject')} <span className="text-red-500" aria-label="required">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    value={data.subject}
-                    onChange={(e) => setData('subject', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                    style={{ '--tw-ring-color': brandColor } as React.CSSProperties}
-                    placeholder={t('What\'s this about?')}
-                    required
-                    disabled={processing}
-                  />
-                  {errors.subject && (
-                    <p className="text-red-600 text-sm mt-1">{errors.subject}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('Message')} <span className="text-red-500" aria-label="required">*</span>
+                  <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
+                    {t('Message')} <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    id="message"
-                    rows={6}
                     value={data.message}
                     onChange={(e) => setData('message', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
-                    style={{ '--tw-ring-color': brandColor } as React.CSSProperties}
+                    rows={6}
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white resize-none transition-all shadow-sm"
                     placeholder={t('Tell us more about your inquiry...')}
                     required
                     disabled={processing}
                   />
-                  {errors.message && (
-                    <p className="text-red-600 text-sm mt-1">{errors.message}</p>
-                  )}
+                  {errors.message && <p className="text-red-500 text-xs mt-1.5">{errors.message}</p>}
                 </div>
 
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={processing}
-                  className="cursor-pointer w-full text-white px-8 py-4 rounded-lg transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  style={{ backgroundColor: brandColor }}
-                  aria-label={processing ? 'Sending message' : 'Send contact message'}
+                  className="w-full py-3 bg-gradient-to-r from-indigo-500 to-[#8b5cf6] rounded-xl font-bold text-white shadow-lg shadow-indigo-500/20 hover:opacity-90 transition-opacity flex justify-center items-center gap-2 text-[14px] mt-2"
                 >
                   {processing ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      {t('Sending...')}
-                    </>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   ) : (
                     <>
-                      <Send className="w-5 h-5" />
-                      {t('Send Message')}
+                      <Send className="w-4 h-4" /> {t('Send Message')}
                     </>
                   )}
                 </button>
+                
+                {/* Security Note */}
+                <div className="flex items-center justify-center gap-2 text-[12px] text-gray-500 mt-4">
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>{t('Your information is secure and will never be shared.')}</span>
+                </div>
               </form>
             </div>
           </div>
 
-          {/* Contact Information */}
-          <div>
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+          {/* Right Column: Info & FAQs */}
+          <div className="relative z-10 flex flex-col h-full gap-4">
+            
+            {/* Contact Information Card */}
+            <div className="bg-white rounded-[20px] p-5 lg:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex-1 flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 border border-indigo-100/50">
+                  <Users className="w-4 h-4 text-indigo-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
                   {sectionData?.info_title || t('Contact Information')}
                 </h3>
-                <p className="text-gray-600 mb-8">
-                  {sectionData?.info_description || t('We\'re here to help and answer any questions you might have about managing your HR processes efficiently. We look forward to hearing from you.')}
-                </p>
               </div>
+              <p className="text-[13px] text-gray-500 leading-relaxed mb-5">
+                {sectionData?.info_description || t("Whether you're looking for a product demo, pricing information, technical support, or partnership opportunities, we'd love to hear from you.")}
+              </p>
+              
+              <div className="space-y-4">
+                {contactInfo.map((info, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                      <info.icon className="w-4 h-4 text-indigo-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-[13px] font-bold text-gray-900 leading-tight mb-0.5">
+                        {info.title}
+                      </h4>
+                      <p className="text-[14px] text-gray-500">
+                        {info.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => {
-                  const IconComponent = info.icon;
+            {/* FAQ Card */}
+            <div className="bg-white rounded-[20px] p-5 lg:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 flex-1 flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 border border-indigo-100/50">
+                  <HelpCircle className="w-4 h-4 text-indigo-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {t('Frequently Asked Questions')}
+                </h3>
+              </div>
+              
+              <div className="space-y-1.5 mb-5">
+                {(sectionData?.faqs || defaultFaqs).map((faq: any, index: number) => {
+                  const questionText = typeof faq === 'string' ? faq : faq.question;
+                  const answerText = typeof faq === 'string' ? t('Please contact our support team for more details about this question.') : faq.answer;
+                  const isOpen = openFaq === index;
+
                   return (
-                    <div key={index} className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${brandColor}15` }}>
-                        <IconComponent className="w-6 h-6" style={{ color: brandColor }} />
+                    <div key={index} className="border-b border-gray-100 last:border-0 rounded-lg overflow-hidden transition-colors">
+                      <div 
+                        className="flex items-center justify-between py-2.5 cursor-pointer hover:bg-gray-50/50 px-2 transition-colors group"
+                        onClick={() => setOpenFaq(isOpen ? null : index)}
+                      >
+                        <span className="text-[13px] font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">{questionText}</span>
+                        <div className={`transform transition-transform duration-200 ${isOpen ? 'rotate-45 text-indigo-600' : 'text-gray-400 group-hover:text-indigo-500'}`}>
+                          <Plus className="w-3.5 h-3.5" />
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-900 mb-1">
-                          {info.title}
-                        </h4>
-                        <p className="text-gray-900 font-medium mb-1">
-                          {info.content}
-                        </p>
-                        <p className="text-gray-600 text-sm">
-                          {info.description}
+                      <div 
+                        className={`overflow-hidden transition-all duration-300 ease-in-out px-2 ${isOpen ? 'max-h-40 opacity-100 pb-3' : 'max-h-0 opacity-0'}`}
+                      >
+                        <p className="text-[12px] text-gray-500 leading-relaxed">
+                          {answerText}
                         </p>
                       </div>
                     </div>
@@ -240,28 +314,28 @@ export default function ContactSection({ flash, settings, sectionData, brandColo
                 })}
               </div>
 
-              {/* FAQ Section */}
-              {sectionData?.faqs && sectionData.faqs.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                    {t('Frequently Asked Questions')}
-                  </h4>
-                  <div className="space-y-4">
-                    {sectionData.faqs.map((faq, index) => (
-                      <div key={index}>
-                        <h5 className="font-medium text-gray-900 mb-1">
-                          {faq.question}
-                        </h5>
-                        <p className="text-gray-600 text-sm">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    ))}
+              {/* Blue Box inside FAQ */}
+              {/* <div className="bg-[#f8fafc] rounded-[16px] p-4 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-slate-200">
+                <div className="flex items-center gap-4 z-10">
+                  <img src="/images/default/headphones.png" alt="Support" className="w-12 h-12 object-contain hidden sm:block" />
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Clock className="w-4 h-4 text-indigo-500" />
+                      <span className="font-bold text-gray-900 text-[13px]">{t('Need immediate help?')}</span>
+                    </div>
+                    <p className="text-[12px] text-gray-500 leading-relaxed">
+                      {t('Our support team is available 24/7 to assist you.')}
+                    </p>
                   </div>
                 </div>
-              )}
+                <button className="px-4 py-2 bg-white border border-indigo-200 text-indigo-600 rounded-lg font-bold text-[12px] hover:bg-indigo-50 transition-colors flex items-center gap-1.5 shadow-sm whitespace-nowrap z-10 flex-shrink-0">
+                  {t('Chat with Support')} <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div> */}
+
             </div>
           </div>
+
         </div>
       </div>
     </section>

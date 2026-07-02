@@ -1,5 +1,15 @@
 import React from 'react';
-import { Monitor } from 'lucide-react';
+import { 
+  Monitor, 
+  LayoutGrid, 
+  User, 
+  CircleDollarSign, 
+  Calendar, 
+  Clock, 
+  Users, 
+  ArrowRight,
+  Sparkles
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { getImagePath } from '@/utils/helpers';
@@ -7,6 +17,7 @@ import { getImagePath } from '@/utils/helpers';
 interface ScreenshotsSectionProps {
   brandColor?: string;
   settings?: any;
+  globalSettings?: any;
   sectionData?: {
     title?: string;
     subtitle?: string;
@@ -26,7 +37,7 @@ export default function ScreenshotsSection({ brandColor = '#3b82f6', settings, g
   // Helper to get full URL for images
   const getImageUrl = (path: string) => {
     if (!path) return null;
-     if (path.startsWith('/screenshots/')) return `${window.appSettings.imageUrl}${path}`;
+    if (path.startsWith('/screenshots/')) return `${window.appSettings.imageUrl}${path}`;
     return getImagePath(path);
   };
 
@@ -83,77 +94,134 @@ export default function ScreenshotsSection({ brandColor = '#3b82f6', settings, g
       src: getImageUrl(screenshot.src)
     })).filter(screenshot => screenshot.src);
 
+  const getCardStyle = (title: string, index: number) => {
+    const normalizedTitle = title.toLowerCase();
+    if (normalizedTitle.includes('dashboard')) return { icon: <LayoutGrid className="w-6 h-6" />, bg: 'bg-[#3b82f6]' };
+    if (normalizedTitle.includes('employee')) return { icon: <User className="w-6 h-6" />, bg: 'bg-[#10b981]' };
+    if (normalizedTitle.includes('payroll')) return { icon: <CircleDollarSign className="w-6 h-6" />, bg: 'bg-[#8b5cf6]' };
+    if (normalizedTitle.includes('leave')) return { icon: <Calendar className="w-6 h-6" />, bg: 'bg-[#f97316]' };
+    if (normalizedTitle.includes('attendance')) return { icon: <Clock className="w-6 h-6" />, bg: 'bg-[#3b82f6]' };
+    if (normalizedTitle.includes('recruitment') || normalizedTitle.includes('onboarding')) return { icon: <Users className="w-6 h-6" />, bg: 'bg-[#ec4899]' };
+    
+    // Fallbacks
+    const styles = [
+      { icon: <LayoutGrid className="w-6 h-6" />, bg: 'bg-blue-500' },
+      { icon: <User className="w-6 h-6" />, bg: 'bg-emerald-500' },
+      { icon: <CircleDollarSign className="w-6 h-6" />, bg: 'bg-purple-500' },
+      { icon: <Calendar className="w-6 h-6" />, bg: 'bg-orange-500' },
+      { icon: <Clock className="w-6 h-6" />, bg: 'bg-indigo-500' },
+      { icon: <Users className="w-6 h-6" />, bg: 'bg-pink-500' },
+    ];
+    return styles[index % styles.length];
+  };
+
   return (
-    <section id="screenshots" className="py-12 sm:py-16 lg:py-20 bg-white" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`text-center mb-8 sm:mb-12 lg:mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {sectionData?.title || t('See dotHRM in Action')}
+    <section id="screenshots" className="py-12 sm:py-16 bg-[#fafbfc] relative overflow-hidden min-h-screen flex flex-col justify-center" ref={ref}>
+      {/* Background Decorators */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-100/60 rounded-full blur-[80px]"></div>
+        <div className="absolute top-1/4 -right-24 w-96 h-96 bg-indigo-50/60 rounded-full blur-[80px]"></div>
+        <div className="absolute top-12 right-12 w-64 h-64 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1.5px, transparent 1.5px)', backgroundSize: '24px 24px' }}></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className={`flex flex-col items-center text-center mb-10 lg:mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-bold tracking-widest uppercase mb-4 border border-blue-100/50 shadow-sm">
+            <Sparkles className="w-4 h-4" />
+            {t('Powerful Features')}
+          </div>
+          
+          {/* Title */}
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0F172A] mb-4 tracking-tight leading-[1.1]">
+            {sectionData?.title ? (
+              <>{sectionData.title}</>
+            ) : (
+              <>
+                {t('Ready to Transform Your')} <br className="hidden sm:block" />
+                <span className="relative inline-block mt-2">
+                  <span className="text-[#3b82f6] relative z-10">{t('HR Operations?')}</span>
+                  {/* Burst effect SVG */}
+                  <svg className="absolute -top-4 -right-8 w-8 h-8 text-blue-500/80 pointer-events-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2v3M19 5l-2.5 2.5M22 12h-3" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                  {/* Curved underline SVG */}
+                  <svg className="absolute w-[110%] h-3 -bottom-1 left-1/2 -translate-x-1/2 text-blue-200 z-0" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path d="M3 9C50 3 150 3 197 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                  </svg>
+                </span>
+              </>
+            )}
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
-            {sectionData?.subtitle || t('Discover how our modern dotHRM platform helps you manage employees, payroll, attendance, and performance — all in one place.')}
+          
+          <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+            {sectionData?.subtitle || t('Automate HR processes, simplify payroll, and empower your workforce with dotHRM.')}
           </p>
         </div>
 
         {screenshots.length > 0 ? (
-          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            {screenshots.map((screenshot, index) => (
-              <div
-                key={index}
-                className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="aspect-video overflow-hidden bg-gray-100">
-                  {screenshot.src ? (
-                    <img
-                      src={screenshot.src}
-                      alt={screenshot.alt}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div className="w-full h-full flex items-center justify-center text-gray-400" style={{ display: screenshot.src ? 'none' : 'flex' }}>
-                    <Monitor className="w-12 h-12" />
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {screenshots.map((screenshot, index) => {
+              const style = getCardStyle(screenshot.title, index);
+              return (
+                <div
+                  key={index}
+                  className="group relative bg-white rounded-[20px] p-4 sm:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/80 flex flex-col h-full hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1"
+                >
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white shadow-sm ${style.bg}`}>
+                      {React.cloneElement(style.icon as React.ReactElement, { className: 'w-5 h-5' })}
+                    </div>
+                    <div className="pt-0.5">
+                      <h3 className="text-base font-bold text-slate-900 mb-1 tracking-tight">
+                        {screenshot.title}
+                      </h3>
+                      <p className="text-[13px] text-slate-500 leading-relaxed font-medium">
+                        {screenshot.description}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-auto relative rounded-xl flex items-end justify-center pt-2">
+                    {screenshot.src ? (
+                      <img
+                        src={screenshot.src}
+                        alt={screenshot.alt}
+                        className="w-full h-auto object-contain object-bottom rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-100/50 group-hover:scale-[1.02] transition-transform duration-500"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextElementSibling) {
+                            (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'flex';
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <div className="w-full h-32 flex items-center justify-center text-slate-300 bg-slate-50 rounded-xl" style={{ display: screenshot.src ? 'none' : 'flex' }}>
+                      <Monitor className="w-8 h-8" />
+                    </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {screenshot.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {screenshot.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className={`text-center py-12 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="text-gray-400 mb-4">
-              <Monitor className="w-16 h-16 mx-auto" />
+            <div className="text-slate-300 mb-4 flex justify-center">
+              <Monitor className="w-16 h-16" />
             </div>
-            <p className="text-gray-500">{t('No screenshots configured yet. Add some in the admin settings.')}</p>
+            <p className="text-slate-500 text-base">{t('No screenshots configured yet. Add some in the admin settings.')}</p>
           </div>
         )}
 
-        <div className={`text-center mt-12 transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center mt-10 sm:mt-12 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <a
             href="#contact"
-            className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium border-2 transition-all"
-            style={{ borderColor: brandColor, color: brandColor, backgroundColor: 'transparent' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = brandColor;
-              e.currentTarget.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = brandColor;
-            }}
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full text-sm font-semibold bg-white border border-slate-200 text-slate-700 hover:text-[#3b82f6] hover:border-blue-200 hover:shadow-lg transition-all duration-300 group"
           >
-            {t('✨ And many more features to discover')}
+            <Sparkles className="w-4 h-4 text-[#3b82f6]" />
+            <span>{t('And many more features to discover')}</span>
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#3b82f6] group-hover:translate-x-1 transition-all duration-300" />
           </a>
         </div>
       </div>

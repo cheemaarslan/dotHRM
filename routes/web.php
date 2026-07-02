@@ -192,7 +192,7 @@ Route::post('payments/xendit/callback', [XenditPaymentController::class, 'callba
 Route::get('/landing-page', [LandingPageController::class, 'settings'])->name('landing-page')->middleware('auth');
 Route::post('/landing-page/contact', [LandingPageController::class, 'submitContact'])->name('landing-page.contact');
 Route::post('/landing-page/subscribe', [LandingPageController::class, 'subscribe'])->name('landing-page.subscribe');
-Route::get('/page/{slug}', [CustomPageController::class, 'show'])->name('custom-page.show')->middleware('guest');
+Route::get('/page/{slug}', [CustomPageController::class, 'show'])->name('custom-page.show');
 
 Route::get('/translations/{locale}', [TranslationController::class, 'getTranslations'])->name('translations');
 Route::get('/refresh-language/{locale}', [TranslationController::class, 'refreshLanguage'])->name('refresh-language');

@@ -94,7 +94,7 @@ export function PageTemplate({
         </div>
         
         {/* Content */}
-        <div className={noPadding ? "" : "rounded-xl border p-6"}>
+        <div className={noPadding ? "" : ""}>
           {children}
         </div>
       </div>

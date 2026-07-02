@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Calendar, ChevronRight, Star, Users, User, Globe, Clock, ShieldCheck, Hexagon, Cloud, Waves, Aperture } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getImagePath, isUserRegistrationEnabled, getCookie, isDemoMode } from '@/utils/helpers';
 
@@ -76,81 +76,84 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
 
   // Reusable text content block
   const textContent = (
-    <div className={`space-y-6 sm:space-y-8 ${
-      layout === 'centered' || layout === 'full-width' ? 'text-center' : 'text-center lg:text-left'
+    <div className={`space-y-6 sm:space-y-8 flex flex-col ${
+      layout === 'centered' || layout === 'full-width' ? 'items-center text-center' : 'items-center lg:items-start text-center lg:text-left'
     }`}>
-      {sectionData.announcement_text && (
-        <div
-          className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border"
-          style={{ borderColor: brandColor, color: brandColor, backgroundColor: `${brandColor}15` }}
-        >
-          {sectionData.announcement_text}
+      {/* Announcement Badge */}
+      <div
+        className="inline-flex items-center p-1 pr-2 sm:pr-3 rounded-full text-sm font-medium bg-white/60 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 backdrop-blur-sm max-w-[95%] sm:max-w-none"
+      >
+        <div className="flex shrink-0 items-center justify-center px-2 sm:px-2.5 py-1 rounded-full mr-2 sm:mr-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider" style={{ backgroundColor: `${brandColor}15`, color: brandColor }}>
+          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full mr-1 sm:mr-1.5" style={{ backgroundColor: brandColor }}></div>
+          NEW
         </div>
-      )}
+        <span className="text-gray-600 mr-1 sm:mr-2 font-medium text-[11px] sm:text-[13px] truncate">Smart Leave & Attendance Tracking is here!</span>
+        <ChevronRight size={14} style={{ color: brandColor }} className="ml-0.5 sm:ml-1 opacity-70 shrink-0" />
+      </div>
+
       <h1
-        className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+        className="text-[2.5rem] md:text-[3.5rem] lg:text-[3rem] font-extrabold leading-[1.1] tracking-[-0.02em]"
         style={{ color: textColor }}
         role="banner"
         aria-label="Main heading"
       >
-        {sectionData.title || t('Create Your Digital Business Card')}
+        All-in-One HR & <br className="hidden sm:block" />
+        Payroll Software. <br className="hidden sm:block" />
+        <span style={{ color: brandColor }}>Built for People.</span>
       </h1>
       <p
-        className={`text-lg md:text-xl leading-relaxed font-medium ${
-          layout === 'centered' || layout === 'full-width' ? 'mx-auto max-w-2xl' : 'max-w-2xl'
+        className={`text-lg md:text-xl leading-relaxed font-normal text-gray-500 ${
+          layout === 'centered' || layout === 'full-width' ? 'mx-auto max-w-2xl' : 'max-w-[540px]'
         }`}
-        style={{ color: subtitleColor, opacity: 0.85 }}
       >
-        {sectionData.subtitle || t('Manage employees, payroll, attendance, and more in one powerful platform.')}
+        Streamline HR, payroll, attendance, leave, recruitment, and performance — all in a single, powerful platform designed for modern teams.
       </p>
-      <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${
+      <div className={`flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto ${
         layout === 'centered' || layout === 'full-width' ? 'justify-center' : 'justify-center lg:justify-start'
       }`}>
         {isSaas && isUserRegistrationEnabled() && (
           <Link
             href={route('register')}
-            className="px-8 py-4 rounded-lg transition-all font-semibold text-base flex items-center justify-center gap-2 border"
-            style={{ backgroundColor: brandColor, color: 'white', borderColor: brandColor }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-              e.currentTarget.style.color = brandColor;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = brandColor;
-              e.currentTarget.style.color = 'white';
-            }}
+            className="px-8 py-3.5 rounded-xl transition-all font-semibold text-base flex items-center justify-center gap-2 shadow-[0_4px_14px_0_rgba(6,81,237,0.39)] hover:shadow-[0_6px_20px_rgba(6,81,237,0.23)] hover:-translate-y-0.5"
+            style={{ backgroundColor: brandColor, color: 'white' }}
             aria-label="Start free trial - Register for HRM"
           >
-            {sectionData.primary_button_text || t('Start Free Trial')}
-            <ArrowRight size={18} />
+            Start Free Trial
+            <ArrowRight size={18} className="ml-1" />
           </Link>
         )}
         <Link
           href={route('login')}
-          className="border px-8 py-4 rounded-lg transition-colors font-semibold text-base flex items-center justify-center gap-2 hover:bg-white/10"
-          style={{ borderColor: brandColor, color: brandColor }}
-          aria-label="Login to existing HRM account"
+          className="border border-gray-200 px-8 py-3.5 rounded-xl transition-all font-semibold text-base flex items-center justify-center gap-2 bg-white hover:bg-gray-50 shadow-sm hover:shadow hover:-translate-y-0.5"
+          style={{ color: brandColor }}
+          aria-label="Book a Demo"
         >
-          <Play size={18} />
-          {sectionData.secondary_button_text || t('Login')}
+          <Calendar size={18} className="mr-1" />
+          Book a Demo
         </Link>
       </div>
-      {sectionData.stats && sectionData.stats.length > 0 && (
-        <div className={`grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pt-8 sm:pt-12 ${
-          layout === 'centered' || layout === 'full-width' ? 'max-w-lg mx-auto' : ''
-        }`}>
-          {sectionData.stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold" style={{ color: textColor }}>
-                {stat.value}
-              </div>
-              <div className="text-sm font-medium" style={{ color: subtitleColor, opacity: 0.8 }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
+      
+      {/* Trust Section */}
+      <div className={`flex items-center gap-5 pt-6 w-full ${
+        layout === 'centered' || layout === 'full-width' ? 'justify-center' : 'justify-center lg:justify-start'
+      }`}>
+        <div className="flex -space-x-3">
+          <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm ring-1 ring-gray-100" src="https://i.pravatar.cc/100?img=1" alt="User 1" />
+          <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm ring-1 ring-gray-100" src="https://i.pravatar.cc/100?img=2" alt="User 2" />
+          <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm ring-1 ring-gray-100" src="https://i.pravatar.cc/100?img=3" alt="User 3" />
+          <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm ring-1 ring-gray-100" src="https://i.pravatar.cc/100?img=4" alt="User 4" />
         </div>
-      )}
+        <div className="flex flex-col text-left">
+          <div className="flex text-yellow-400 gap-0.5">
+            <Star size={14} fill="currentColor" strokeWidth={1} />
+            <Star size={14} fill="currentColor" strokeWidth={1} />
+            <Star size={14} fill="currentColor" strokeWidth={1} />
+            <Star size={14} fill="currentColor" strokeWidth={1} />
+            <Star size={14} fill="currentColor" strokeWidth={1} />
+          </div>
+          <span className="text-[13px] font-semibold text-gray-500 mt-1">Trusted by 10,000+ businesses worldwide</span>
+        </div>
+      </div>
     </div>
   );
 
@@ -161,14 +164,18 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
     'mx-auto'; // center (default)
 
   const imageContent = imagePosition === 'background' ? null : (
-    <div className={`relative ${imageAlignClass}`}>
+    <div className={`relative ${imageAlignClass} w-full mt-10 lg:mt-0`}>
+      {/* Decorative Dots */}
+      <div className="absolute top-10 -right-4 w-32 h-32 opacity-20 z-0 hidden lg:block" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px' }}></div>
+      <div className="absolute -bottom-6 -left-6 w-32 h-32 opacity-20 z-0 hidden lg:block" style={{ backgroundImage: `radial-gradient(${brandColor} 2px, transparent 2px)`, backgroundSize: '16px 16px' }}></div>
+      {/* Subtle Glow */}
+      <div className="absolute inset-0 z-0 opacity-[0.08] blur-[80px] rounded-full pointer-events-none" style={{ backgroundColor: brandColor, transform: 'scale(0.85)' }}></div>
+      
       <img
         src={heroImage || defaultImage}
         alt="Hero"
-        className="w-full h-auto rounded-2xl shadow-xl"
+        className="w-full h-auto z-10 relative drop-shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
       />
-      <div className="absolute -top-4 -right-4 w-16 h-16 bg-gray-200 rounded-full opacity-50"></div>
-      <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gray-300 rounded-full opacity-40"></div>
     </div>
   );
 
@@ -178,16 +185,16 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
       // Text centered, image below
       case 'centered':
         return (
-          <div className="flex flex-col items-center gap-10">
+          <div className="flex flex-col items-center gap-12">
             {textContent}
-            <div className="w-full max-w-3xl">{imageContent}</div>
+            <div className="w-full max-w-4xl">{imageContent}</div>
           </div>
         );
 
       // Full width - text centered, image full width below
       case 'full-width':
         return (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-12">
             {textContent}
             <div className="w-full">{imageContent}</div>
           </div>
@@ -196,7 +203,7 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
       // Image on left, text on right
       case 'image-left':
         return (
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-12 sm:gap-16 lg:gap-20 items-center">
             {imageContent}
             {textContent}
           </div>
@@ -206,7 +213,7 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
       case 'image-right':
       default:
         return (
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 sm:gap-16 lg:gap-20 items-center">
             {textContent}
             {imageContent}
           </div>
@@ -217,7 +224,7 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
   return (
     <section
       id="hero"
-      className="pt-16 flex items-center relative"
+      className="pt-24 pb-16 flex flex-col items-center relative overflow-hidden"
       style={{
         backgroundColor: hasOverlay ? overlayColor : backgroundColor,
         minHeight,
@@ -229,6 +236,16 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
         } : {})
       }}
     >
+      {/* Decorative Blobs */}
+      <div 
+        className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full opacity-[0.05] blur-[120px] z-0 pointer-events-none" 
+        style={{ background: brandColor }}
+      />
+      <div 
+        className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] rounded-full opacity-[0.03] blur-[120px] z-0 pointer-events-none" 
+        style={{ background: brandColor }}
+      />
+
       {/* Overlay - only shown when overlay is true and image is background */}
       {hasOverlay && imagePosition === 'background' && (
         <div
@@ -237,8 +254,76 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
         />
       )}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 w-full">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pt-10 lg:pb-20 w-full">
         {renderLayout()}
+      </div>
+
+      {/* Trusted By Logos */}
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-4 mt-10 mb-16">
+        <p className="text-center text-[15px] font-semibold text-gray-500 mb-10">
+          Trusted by growing businesses around the world
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14 lg:gap-20 opacity-80 grayscale hover:grayscale-0 transition-all duration-300">
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Hexagon size={26} strokeWidth={2.5} /> TechNova</div>
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Cloud size={26} strokeWidth={2.5} /> cloudmart</div>
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Aperture size={26} strokeWidth={2.5} /> BrightEdge</div>
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Waves size={26} strokeWidth={2.5} /> waveflow</div>
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Hexagon size={26} strokeWidth={2.5} /> pixelcraft</div>
+          <div className="flex items-center gap-2 text-[22px] font-bold text-gray-600 tracking-tight"><Globe size={26} strokeWidth={2.5} /> globalbank</div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="relative z-10 w-full max-w-[1100px] mx-auto px-4 mb-8">
+        <div className="bg-[#f8fafc] rounded-[2rem] p-6 sm:p-8 lg:px-12 lg:py-10 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.03)] border border-gray-100">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-row justify-between items-start md:items-center gap-6 sm:gap-8 md:gap-4 lg:px-6 w-fit mx-auto md:w-full">
+            <div className="flex items-center gap-4 justify-start">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${brandColor}15`, color: brandColor }}>
+                <Users className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+              </div>
+              <div className="flex flex-col text-left">
+                <h4 className="text-[22px] sm:text-[26px] font-bold text-gray-900 leading-none mb-1.5">10K+</h4>
+                <p className="text-[13px] sm:text-[14px] font-semibold text-gray-500 leading-none">Active Users</p>
+              </div>
+            </div>
+            
+            <div className="hidden md:block w-px h-12 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 justify-start">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${brandColor}15`, color: brandColor }}>
+                <Globe className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+              </div>
+              <div className="flex flex-col text-left">
+                <h4 className="text-[22px] sm:text-[26px] font-bold text-gray-900 leading-none mb-1.5">50+</h4>
+                <p className="text-[13px] sm:text-[14px] font-semibold text-gray-500 leading-none">Countries</p>
+              </div>
+            </div>
+            
+            <div className="hidden md:block w-px h-12 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 justify-start">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${brandColor}15`, color: brandColor }}>
+                <User className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+              </div>
+              <div className="flex flex-col text-left">
+                <h4 className="text-[22px] sm:text-[26px] font-bold text-gray-900 leading-none mb-1.5">99%</h4>
+                <p className="text-[13px] sm:text-[14px] font-semibold text-gray-500 leading-none">Customer Satisfaction</p>
+              </div>
+            </div>
+            
+            <div className="hidden md:block w-px h-12 bg-gray-200"></div>
+            
+            <div className="flex items-center gap-4 justify-start">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${brandColor}15`, color: brandColor }}>
+                <Clock className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+              </div>
+              <div className="flex flex-col text-left">
+                <h4 className="text-[22px] sm:text-[26px] font-bold text-gray-900 leading-none mb-1.5">24/7</h4>
+                <p className="text-[13px] sm:text-[14px] font-semibold text-gray-500 leading-none">Support</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

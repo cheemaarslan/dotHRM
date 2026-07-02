@@ -20,7 +20,7 @@ class DefaultSuperAdminSeeder extends Seeder
                 [
                     'name' => 'Super Admin',
                     'email_verified_at' => now(),
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make('12345678'),
                     'type' => 'superadmin',
                     'lang' => 'en'
                 ]

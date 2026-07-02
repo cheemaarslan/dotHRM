@@ -48,14 +48,17 @@ class CustomPageController extends Controller
     }
 
     public function store(Request $request)
-    {        
+    {
         $validated = $request->validate([
-            'title' => 'required|string|max:255|unique:landing_page_custom_pages,title,' . $customPage->id,
-            'content' => 'required|string',
-            'meta_title' => 'nullable|string|max:255',
+            'title'            => 'required|string|max:255|unique:landing_page_custom_pages,title',
+            'content'          => 'nullable|string',
+            'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
-            'is_active' => 'boolean',
-            'sort_order' => 'nullable|integer'
+            'is_active'        => 'boolean',
+            'sort_order'       => 'nullable|integer',
+            'sections'         => 'nullable|array',
+            'sections.*'       => 'string',
+            'show_breadcrumb'  => 'boolean',
         ]);
 
         LandingPageCustomPage::create($validated);
@@ -65,20 +68,26 @@ class CustomPageController extends Controller
 
     public function edit(LandingPageCustomPage $customPage)
     {
+        $landingSettings = \App\Models\LandingPageSetting::getSettings();
+
         return Inertia::render('landing-page/custom-pages/edit', [
-            'page' => $customPage
+            'page'     => $customPage,
+            'settings' => $landingSettings,
         ]);
     }
 
     public function update(Request $request, LandingPageCustomPage $customPage)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255|unique:landing_page_custom_pages,title,' . $customPage->id,
-            'content' => 'required|string',
-            'meta_title' => 'nullable|string|max:255',
+            'title'            => 'required|string|max:255|unique:landing_page_custom_pages,title,' . $customPage->id,
+            'content'          => 'nullable|string',
+            'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
-            'is_active' => 'sometimes|boolean',
-            'sort_order' => 'nullable|integer'
+            'is_active'        => 'sometimes|boolean',
+            'sort_order'       => 'nullable|integer',
+            'sections'         => 'nullable|array',
+            'sections.*'       => 'string',
+            'show_breadcrumb'  => 'sometimes|boolean',
         ]);
 
         // Ensure is_active is properly handled
@@ -101,14 +110,35 @@ class CustomPageController extends Controller
     {
         $page = LandingPageCustomPage::where('slug', $slug)->where('is_active', true)->firstOrFail();
         $landingSettings = \App\Models\LandingPageSetting::getSettings();
-        
+
+        // Build plans list if SaaS mode is enabled (needed for PlansSection)
+        $plans = collect();
+        if (isSaas()) {
+            $plans = \App\Models\Plan::where('is_plan_enable', 'on')->get()->map(function ($plan) {
+                return [
+                    'id'            => $plan->id,
+                    'name'          => $plan->name,
+                    'price'         => $plan->price,
+                    'yearly_price'  => $plan->yearly_price,
+                    'duration'      => $plan->duration,
+                    'description'   => $plan->description,
+                    'features'      => [],
+                    'is_plan_enable' => $plan->is_plan_enable,
+                    'is_popular'    => false,
+                ];
+            });
+        }
+
         // Track page visit for super admin analytics
         // \Shetabit\Visitor\Facade\Visitor::visit();
-        
+
         return Inertia::render('landing-page/custom-page', [
-            'page' => $page,
+            'page'        => $page,
             'customPages' => LandingPageCustomPage::active()->ordered()->get(),
-            'settings' => $landingSettings
+            'settings'    => $landingSettings,
+            'plans'       => $plans,
+            'testimonials' => [],
+            'faqs'        => [],
         ]);
     }
 }

@@ -186,14 +186,11 @@ export default function ContactSection({ flash, settings, sectionData, brandColo
                       type="text"
                       value={data.subject}
                       onChange={(e) => setData('subject', e.target.value)}
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white transition-all shadow-sm pr-10"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-[14px] text-gray-900 placeholder-gray-400 bg-white transition-all shadow-sm"
                       placeholder={t("What's this about?")}
                       required
                       disabled={processing}
                     />
-                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
-                    </div>
                   </div>
                   {errors.subject && <p className="text-red-500 text-xs mt-1.5">{errors.subject}</p>}
                 </div>

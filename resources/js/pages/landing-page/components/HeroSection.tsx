@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { ArrowRight, Play, Calendar, ChevronRight, Star, Users, User, Globe, Clock, ShieldCheck, Hexagon, Cloud, Waves, Aperture } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getImagePath, isUserRegistrationEnabled, getCookie, isDemoMode } from '@/utils/helpers';
+import DynamicTitle from './DynamicTitle';
 
 interface HeroSectionProps {
   brandColor?: string;
@@ -97,9 +98,7 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
         role="banner"
         aria-label="Main heading"
       >
-        All-in-One HR & <br className="hidden sm:block" />
-        Payroll Software. <br className="hidden sm:block" />
-        <span style={{ color: brandColor }}>Built for People.</span>
+        <DynamicTitle title={sectionData?.title || t(`All-in-One HR &\nPayroll Software.\n,Built for People.,`)} brandColor={brandColor} />
       </h1>
       <p
         className={`text-lg md:text-xl leading-relaxed font-normal text-gray-500 ${

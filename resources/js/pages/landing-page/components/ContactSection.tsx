@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Mail, Phone, MapPin, Send, User, ChevronDown, Lock, Users, HelpCircle, Plus, Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
+import DynamicTitle from './DynamicTitle';
 
 interface ContactSectionProps {
   brandColor?: string;
@@ -99,7 +100,7 @@ export default function ContactSection({ flash, settings, sectionData, brandColo
             <span className="text-[11px] font-bold text-indigo-600 tracking-wide">{t('GET IN TOUCH')}</span>
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-[#0f172a] mb-3 tracking-tight">
-            {sectionData?.title || t("We'd Love to Hear from You")}
+            <DynamicTitle title={sectionData?.title || t(`We'd Love to Hear from ,You,`)} brandColor={brandColor} />
           </h2>
           <p className="text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
             {sectionData?.subtitle || t('Have questions about dotHRM? Our team is here to help you discover how smarter HR and payroll management can transform your business.')}

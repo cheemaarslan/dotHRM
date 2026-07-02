@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 
 interface Feature {
   title: string;
@@ -269,10 +270,9 @@ export default function FeaturesSection({ settings, sectionData, brandColor = '#
           </div>
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight max-w-4xl mx-auto leading-[1.1]">
-            {t('Everything Your ')}<span className="text-blue-600">{t('HR Team')}</span>{t(' Needs')}
-            <div className="w-10 h-1 bg-blue-600 mx-auto mt-4 rounded-full opacity-80" />
+            <DynamicTitle title={sectionData?.title || t(`Everything Your ,HR Team, Needs`)} brandColor={brandColor} />
+  
           </h2>
-
           <div className="text-sm sm:text-base text-slate-500 max-w-3xl mx-auto leading-snug font-medium mt-4">
             <p>{t('Stop managing employee records in spreadsheets and disconnected systems.')}<br className="hidden sm:block"/>
             {t('dotHRM provides a complete HR ecosystem that helps organizations streamline operations, improve productivity, and ensure compliance.')}</p>

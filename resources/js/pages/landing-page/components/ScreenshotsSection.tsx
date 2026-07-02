@@ -13,6 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { getImagePath } from '@/utils/helpers';
+import DynamicTitle from './DynamicTitle';
 
 interface ScreenshotsSectionProps {
   brandColor?: string;
@@ -134,24 +135,7 @@ export default function ScreenshotsSection({ brandColor = '#3b82f6', settings, g
           
           {/* Title */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0F172A] mb-4 tracking-tight leading-[1.1]">
-            {sectionData?.title ? (
-              <>{sectionData.title}</>
-            ) : (
-              <>
-                {t('Ready to Transform Your')} <br className="hidden sm:block" />
-                <span className="relative inline-block mt-2">
-                  <span className="text-[#3b82f6] relative z-10">{t('HR Operations?')}</span>
-                  {/* Burst effect SVG */}
-                  <svg className="absolute -top-4 -right-8 w-8 h-8 text-blue-500/80 pointer-events-none" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2v3M19 5l-2.5 2.5M22 12h-3" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                  {/* Curved underline SVG */}
-                  <svg className="absolute w-[110%] h-3 -bottom-1 left-1/2 -translate-x-1/2 text-blue-200 z-0" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                    <path d="M3 9C50 3 150 3 197 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-                  </svg>
-                </span>
-              </>
-            )}
+            <DynamicTitle title={sectionData?.title || t(`Ready to Transform Your \n ,HR Operations?,`)} brandColor={brandColor} />
           </h2>
           
           <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">

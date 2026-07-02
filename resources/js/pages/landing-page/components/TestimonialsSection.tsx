@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Star, Quote, MessageCircle, Shield, Briefcase, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 
 interface Testimonial {
   id: number;
@@ -206,12 +207,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
             <span className="text-[11px] font-bold text-indigo-600 tracking-wide">{t('CLIENT LOVE')}</span>
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-[#0f172a] mb-3 tracking-tight">
-            What Our <span className="text-indigo-600 relative inline-block">
-              Clients
-              <svg className="absolute -bottom-1.5 left-0 w-full h-2.5 text-indigo-300/60" viewBox="0 0 100 20" preserveAspectRatio="none">
-                <path d="M0 15 Q 50 0 100 15" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
-              </svg>
-            </span> Say
+            <DynamicTitle title={sectionData?.title || t(`What Our ,Clients, Say`)} brandColor={brandColor} />
           </h2>
           <p className="text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
             {sectionData?.subtitle || t('Trusted by HR leaders and teams worldwide to simplify processes, save time, and drive real results.')}

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Check, ArrowRight, ShieldCheck, Lock, Headphones, RefreshCw, Box, Rocket, Crown, BadgePercent, Star } from 'lucide-react';
+import { Check, ArrowRight, ShieldCheck, Lock, Headphones, RefreshCw, Box, Rocket, Crown, BadgePercent, Star, X, Shield, Zap, Info } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 import { isUserRegistrationEnabled, getCookie, isDemoMode } from '@/utils/helpers';
 
 // Simple encryption function for plan ID
@@ -178,13 +179,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
           </div>
           
           <h2 className={`text-3xl md:text-4xl lg:text-5xl font-extrabold ${isDark ? 'text-white' : 'text-[#0f172a]'} mb-3 tracking-tight leading-tight`}>
-            {sectionData?.title?.includes('dotHRM') ? (
-              <>
-                {t('Choose Your')} <span className="text-blue-600">dotHRM</span> {t('Plan')}
-              </>
-            ) : (
-              sectionData?.title || <>{t('Choose Your')} <span className="text-blue-600">dotHRM</span> {t('Plan')}</>
-            )}
+            <DynamicTitle title={sectionData?.title || t(`Choose Your ,dotHRM, Plan`)} brandColor={brandColor} />
           </h2>
           
           <p className={`text-base md:text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'} max-w-2xl mx-auto mb-6 leading-relaxed font-medium`}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Lightbulb, Star, Users, Zap, Rocket, Globe, Monitor } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 
 interface AboutUsProps {
   brandColor?: string;
@@ -28,8 +29,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#3b82f6' 
           </div>
           
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight leading-[1.15]">
-            {t('Empowering Businesses.')}<br />
-            {t('Elevating')} <span className="text-blue-600">{t('People.')}</span>
+            <DynamicTitle title={sectionData?.title || t(`Who We ,Are,`)} brandColor={brandColor} />
           </h2>
           
           <p className="text-base md:text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">

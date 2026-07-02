@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Mail, CheckCircle, ShieldCheck, Send, ArrowRight, FileText, Lightbulb, BarChart2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
+import DynamicTitle from './DynamicTitle';
 
 interface NewsletterSectionProps {
   brandColor?: string;
@@ -100,9 +101,7 @@ export default function NewsletterSection({ flash, settings, sectionData, global
 
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0f172a] mb-4 tracking-tight leading-tight">
-          {sectionData?.title || (
-            <>{t('Stay Updated with')} <span className="text-[#0f172a]">dotHRM</span></>
-          )}
+          <DynamicTitle title={sectionData?.title || t(`Stay ,Updated, with HR Trends`)} brandColor={brandColor} />
         </h2>
         
         {/* Subtitle */}

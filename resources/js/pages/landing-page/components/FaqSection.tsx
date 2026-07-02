@@ -3,6 +3,8 @@ import { Plus, Minus, Check, ArrowRight, Zap } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { getCookie, isDemoMode } from '@/utils/helpers';
 import { useTranslation } from 'react-i18next';
+import { router } from '@inertiajs/react';
+import DynamicTitle from './DynamicTitle';
 
 interface Faq {
   id: number;
@@ -82,7 +84,7 @@ export default function FaqSection({ faqs, settings, sectionData, brandColor = '
         {/* Header */}
         <div className="mb-6 lg:w-7/12 xl:w-8/12">
           <h2 className={`text-2xl md:text-3xl lg:text-4xl font-bold ${isDark ? 'text-white' : 'text-[#0f172a]'} mb-3 tracking-tight leading-tight`}>
-            {sectionData?.title || t('Frequently Asked Questions')}
+            <DynamicTitle title={sectionData?.title || t('Frequently Asked ,Questions,')} brandColor={brandColor} />
           </h2>
           <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-500'} font-medium`}>
             {sectionData?.subtitle || t("Got questions? We've got answers.")}

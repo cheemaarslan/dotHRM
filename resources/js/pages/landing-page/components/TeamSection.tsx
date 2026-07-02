@@ -1,6 +1,8 @@
 import React from 'react';
 import { Linkedin, Twitter, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 
 interface TeamSectionProps {
   brandColor?: string;
@@ -71,7 +73,7 @@ export default function TeamSection({ settings, sectionData, brandColor = '#3b82
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {sectionData?.title || t('Meet Our Team')}
+            <DynamicTitle title={sectionData?.title || t('Meet Our ,Team,')} brandColor={brandColor} />
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
             {sectionData?.subtitle || t('We\'re a dedicated team of HR and technology experts.')}

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import DynamicTitle from './DynamicTitle';
 
 interface WhyChooseUsProps {
   brandColor?: string;
@@ -119,8 +120,7 @@ export default function WhyChooseUs({ settings, sectionData, brandColor = '#3b82
             </div>
             
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-[1.1] tracking-tight">
-              Built for HR Teams.<br />
-              Designed for <span className="text-blue-600">Impact.</span>
+              <DynamicTitle title={sectionData?.title || t(`Built for HR Teams.\nDesigned for ,Impact.,`)} brandColor={brandColor} />
             </h2>
             
             <p className="text-base text-gray-500 mb-6 leading-relaxed max-w-[420px]">

@@ -119,9 +119,10 @@ export default function CustomPagesIndex() {
     {
       key: 'content',
       label: 'Content',
-      render: (value: string) => {
+      render: (value: string | null) => {
+        if (!value) return <span className="text-gray-400 italic">No content</span>;
         const plainText = value.replace(/<[^>]*>/g, '');
-        return <div className="max-w-xs truncate" title={plainText}>{plainText.substring(0, 100)}...</div>;
+        return <div className="max-w-xs truncate" title={plainText}>{plainText.substring(0, 100)}{plainText.length > 100 ? '...' : ''}</div>;
       }
     },
     {

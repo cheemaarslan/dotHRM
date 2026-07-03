@@ -107,6 +107,29 @@ class DashboardController extends Controller
             ? round((($currentMonthCompanies - $previousMonthCompanies) / $previousMonthCompanies) * 100, 1)
             : ($currentMonthCompanies > 0 ? 100 : 0));
 
+        // Generate chart data for the last 6 months
+        $chartData = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $month = $date->format('M');
+            
+            $monthlyRevenue = isDemo() ? rand(1000, 5000) : PlanOrder::where('status', 'approved')
+                ->whereMonth('created_at', $date->month)
+                ->whereYear('created_at', $date->year)
+                ->sum('final_price') ?? 0;
+                
+            $monthlyCompanies = isDemo() ? rand(5, 50) : User::where('type', 'company')
+                ->whereMonth('created_at', $date->month)
+                ->whereYear('created_at', $date->year)
+                ->count();
+                
+            $chartData[] = [
+                'name' => $month,
+                'revenue' => (float)$monthlyRevenue,
+                'companies' => $monthlyCompanies,
+            ];
+        }
+
         $dashboardData = [
             'stats' => [
                 'totalCompanies' => $totalCompanies,
@@ -117,6 +140,7 @@ class DashboardController extends Controller
                 'monthlyGrowth' => $monthlyGrowth,
                 'activeCoupons' => $activeCoupons,
             ],
+            'chartData' => $chartData,
             'recentActivity' => User::where('type', 'company')
                 ->orderBy('created_at', 'desc')
                 ->take(5)
@@ -482,6 +506,39 @@ class DashboardController extends Controller
         //         $todayAttendance = $todayAttendance->fresh();
         //     }
         // }
+        
+        // Weekly Attendance Chart Data
+        $startDate = \Carbon\Carbon::now()->startOfWeek();
+        $endDate = \Carbon\Carbon::now()->endOfWeek();
+        
+        $weeklyAttendance = AttendanceRecord::where('employee_id', $user->id)
+            ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->get();
+            
+        $attendanceChartData = [];
+        $currentDate = $startDate->copy();
+        
+        while ($currentDate <= $endDate) {
+            $record = $weeklyAttendance->firstWhere('date', $currentDate->format('Y-m-d'));
+            $hours = 0;
+            
+            if ($record && $record->clock_in && $record->clock_out) {
+                $clockIn = \Carbon\Carbon::parse($record->clock_in);
+                $clockOut = \Carbon\Carbon::parse($record->clock_out);
+                // If it spans past midnight or just standard difference
+                if ($clockOut->lt($clockIn)) {
+                    $clockOut->addDay();
+                }
+                $hours = $clockIn->diffInMinutes($clockOut) / 60;
+            }
+            
+            $attendanceChartData[] = [
+                'day' => $currentDate->format('D'), // Mon, Tue, etc.
+                'hours' => round($hours, 1)
+            ];
+            
+            $currentDate->addDay();
+        }
 
         $dashboardData = [
             'stats' => [
@@ -499,6 +556,7 @@ class DashboardController extends Controller
             'currentTime' => \Carbon\Carbon::now()->format('H:i:s'),
             'employeeShift' => $employeeShift,
             'userType' => $user->type,
+            'attendanceChartData' => $attendanceChartData,
         ];
 
         return Inertia::render('employee-dashboard', [

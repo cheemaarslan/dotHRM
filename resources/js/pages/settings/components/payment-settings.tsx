@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Save, CreditCard, AlertCircle, Banknote, IndianRupee, Wallet, Coins, Search, X } from 'lucide-react';
 import { PAYMENT_METHODS, PAYMENT_METHOD_LABELS, PAYMENT_METHOD_HELP_URLS } from '@/utils/payment';
 import { SettingsSection } from '@/components/settings-section';
@@ -463,6 +463,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 </div>
               )}
 
+              <ScrollArea className="h-[600px] pr-4">
+                <div className="space-y-6">
               {/* Bank Transfer */}
               {shouldShowMethod('bank') && (
               <PaymentMethodCard
@@ -1605,6 +1607,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 </div>
               </PaymentMethodCard>
               )}
+                </div>
+              </ScrollArea>
             </CardContent>
           </Card>
 

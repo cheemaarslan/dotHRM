@@ -46,54 +46,9 @@ export default function Referral() {
     }] : [])
   ];
   
-  const dashboardRef = useRef<HTMLDivElement>(null);
-  const referredUsersRef = useRef<HTMLDivElement>(null);
-  const payoutRequestsRef = useRef<HTMLDivElement>(null);
-  const settingsRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100;
-      
-      const dashboardPosition = dashboardRef.current?.offsetTop || 0;
-      const referredUsersPosition = referredUsersRef.current?.offsetTop || 0;
-      const payoutRequestsPosition = payoutRequestsRef.current?.offsetTop || 0;
-      const settingsPosition = settingsRef.current?.offsetTop || 0;
-      
-      if (userType === 'superadmin' && scrollPosition >= settingsPosition) {
-        setActiveSection('settings');
-      } else if (scrollPosition >= payoutRequestsPosition) {
-        setActiveSection('payout-requests');
-      } else if (scrollPosition >= referredUsersPosition) {
-        setActiveSection('referred-users');
-      } else {
-        setActiveSection('dashboard');
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const element = document.getElementById(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        setActiveSection(hash);
-      }
-    }
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [userType]);
-
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '');
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(id);
-    }
+    setActiveSection(id);
   };
 
   return (
@@ -126,39 +81,45 @@ export default function Referral() {
         </div>
 
         <div className="flex-1">
-          <section id="dashboard" ref={dashboardRef} className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">{t('Dashboard')}</h2>
-            <ReferralDashboard 
-              userType={userType}
-              stats={stats}
-              referralLink={referralLink}
-              recentReferredUsers={props.recentReferredUsers}
-              currencySymbol={currencySymbol}
-            />
-          </section>
+          {activeSection === 'dashboard' && (
+            <section id="dashboard" className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">{t('Dashboard')}</h2>
+              <ReferralDashboard 
+                userType={userType}
+                stats={stats}
+                referralLink={referralLink}
+                recentReferredUsers={props.recentReferredUsers}
+                currencySymbol={currencySymbol}
+              />
+            </section>
+          )}
 
-          <section id="referred-users" ref={referredUsersRef} className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">{t('Referred Users')}</h2>
-            <ReferredUsersSection 
-              referredUsers={props.referredUsers}
-              userType={userType}
-              currencySymbol={currencySymbol}
-            />
-          </section>
+          {activeSection === 'referred-users' && (
+            <section id="referred-users" className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">{t('Referred Users')}</h2>
+              <ReferredUsersSection 
+                referredUsers={props.referredUsers}
+                userType={userType}
+                currencySymbol={currencySymbol}
+              />
+            </section>
+          )}
 
-          <section id="payout-requests" ref={payoutRequestsRef} className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">{t('Payout Requests')}</h2>
-            <PayoutRequests 
-              userType={userType}
-              payoutRequests={payoutRequests}
-              settings={settings}
-              stats={stats}
-              currencySymbol={currencySymbol}
-            />
-          </section>
+          {activeSection === 'payout-requests' && (
+            <section id="payout-requests" className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">{t('Payout Requests')}</h2>
+              <PayoutRequests 
+                userType={userType}
+                payoutRequests={payoutRequests}
+                settings={settings}
+                stats={stats}
+                currencySymbol={currencySymbol}
+              />
+            </section>
+          )}
 
-          {userType === 'superadmin' && (
-            <section id="settings" ref={settingsRef} className="mb-8">
+          {activeSection === 'settings' && userType === 'superadmin' && (
+            <section id="settings" className="mb-8">
               <h2 className="text-xl font-semibold mb-4">{t('Settings')}</h2>
               <ReferralSettings settings={settings} currencySymbol={currencySymbol} globalSettings={globalSettings} />
             </section>

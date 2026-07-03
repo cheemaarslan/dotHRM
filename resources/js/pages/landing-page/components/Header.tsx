@@ -57,10 +57,15 @@ export default function Header({ settings, sectionData, customPages = [], brandC
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems = customPages.map(page => ({
-    name: page.title,
-    href: route('custom-page.show', page.slug)
-  }));
+  // Exclude specific legal/policy pages from the main header navigation
+  const excludedSlugs = ['privacy-policy', 'terms-and-conditions', 'terms-of-service', 'refund-policy', 'refund'];
+
+  const menuItems = customPages
+    .filter(page => !excludedSlugs.includes(page.slug.toLowerCase()))
+    .map(page => ({
+      name: page.title,
+      href: route('custom-page.show', page.slug)
+    }));
 
 
   const isTransparent = sectionData?.transparent;
@@ -103,7 +108,7 @@ export default function Header({ settings, sectionData, customPages = [], brandC
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderClasses()}`}
       style={getHeaderStyle()}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">

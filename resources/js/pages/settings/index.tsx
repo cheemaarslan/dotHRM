@@ -201,128 +201,9 @@ export default function Settings() {
   });
 
   // Refs for each section
-  const systemSettingsRef = useRef<HTMLDivElement>(null);
-  const brandSettingsRef = useRef<HTMLDivElement>(null);
-
-  const currencySettingsRef = useRef<HTMLDivElement>(null);
-  const workingDaysSettingsRef = useRef<HTMLDivElement>(null);
-  const emailSettingsRef = useRef<HTMLDivElement>(null);
-  const paymentSettingsRef = useRef<HTMLDivElement>(null);
-  const storageSettingsRef = useRef<HTMLDivElement>(null);
-  const recaptchaSettingsRef = useRef<HTMLDivElement>(null);
-  const chatgptSettingsRef = useRef<HTMLDivElement>(null);
-  const cookieSettingsRef = useRef<HTMLDivElement>(null);
-  const seoSettingsRef = useRef<HTMLDivElement>(null);
-  const cacheSettingsRef = useRef<HTMLDivElement>(null);
-  const webhookSettingsRef = useRef<HTMLDivElement>(null);
-  const googleCalendarSettingsRef = useRef<HTMLDivElement>(null);
-  const googleWalletSettingsRef = useRef<HTMLDivElement>(null);
-  const zektoSettingsRef = useRef<HTMLDivElement>(null);
-  const ipRestrictionSettingsRef = useRef<HTMLDivElement>(null);
-  const nocSettingsRef = useRef<HTMLDivElement>(null);
-  const experienceCertificateSettingsRef = useRef<HTMLDivElement>(null);
-  const joiningLetterSettingsRef = useRef<HTMLDivElement>(null);
-
-
-  // Smart scroll functionality
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100; // Add offset for better UX
-
-      // Get positions of each section
-      const systemSettingsPosition = systemSettingsRef.current?.offsetTop || 0;
-      const brandSettingsPosition = brandSettingsRef.current?.offsetTop || 0;
-
-      const currencySettingsPosition = currencySettingsRef.current?.offsetTop || 0;
-      const workingDaysSettingsPosition = workingDaysSettingsRef.current?.offsetTop || 0;
-      const emailSettingsPosition = emailSettingsRef.current?.offsetTop || 0;
-      const paymentSettingsPosition = paymentSettingsRef.current?.offsetTop || 0;
-      const storageSettingsPosition = storageSettingsRef.current?.offsetTop || 0;
-      const recaptchaSettingsPosition = recaptchaSettingsRef.current?.offsetTop || 0;
-      const chatgptSettingsPosition = chatgptSettingsRef.current?.offsetTop || 0;
-      const cookieSettingsPosition = cookieSettingsRef.current?.offsetTop || 0;
-      const seoSettingsPosition = seoSettingsRef.current?.offsetTop || 0;
-      const cacheSettingsPosition = cacheSettingsRef.current?.offsetTop || 0;
-      const webhookSettingsPosition = webhookSettingsRef.current?.offsetTop || 0;
-      const googleCalendarSettingsPosition = googleCalendarSettingsRef.current?.offsetTop || 0;
-      const googleWalletSettingsPosition = googleWalletSettingsRef.current?.offsetTop || 0;
-      const zektoSettingsPosition = zektoSettingsRef.current?.offsetTop || 0;
-      const ipRestrictionSettingsPosition = ipRestrictionSettingsRef.current?.offsetTop || 0;
-      const nocSettingsPosition = nocSettingsRef.current?.offsetTop || 0;
-      const experienceCertificateSettingsPosition = experienceCertificateSettingsRef.current?.offsetTop || 0;
-      const joiningLetterSettingsPosition = joiningLetterSettingsRef.current?.offsetTop || 0;
-
-      // Determine active section based on scroll position
-      // if (scrollPosition >= googleCalendarSettingsPosition) {
-      //   setActiveSection('google-calendar-settings');
-      // } 
-      //  if (scrollPosition >= webhookSettingsPosition) {
-      //   setActiveSection('webhook-settings');
-      // } 
-      if (scrollPosition >= joiningLetterSettingsPosition) {
-        setActiveSection('joining-letter-settings');
-      } else if (scrollPosition >= experienceCertificateSettingsPosition) {
-        setActiveSection('experience-certificate-settings');
-      } else if (scrollPosition >= nocSettingsPosition) {
-        setActiveSection('noc-settings');
-      } else if (scrollPosition >= zektoSettingsPosition) {
-        setActiveSection('zekto-settings');
-      } else if (scrollPosition >= ipRestrictionSettingsPosition) {
-        setActiveSection('ip-restriction-settings');
-      } else if (scrollPosition >= cacheSettingsPosition) {
-        setActiveSection('cache-settings');
-      } else if (scrollPosition >= seoSettingsPosition) {
-        setActiveSection('seo-settings');
-      } else if (scrollPosition >= cookieSettingsPosition) {
-        setActiveSection('cookie-settings');
-      } else if (scrollPosition >= chatgptSettingsPosition) {
-        setActiveSection('chatgpt-settings');
-      } else if (scrollPosition >= recaptchaSettingsPosition) {
-        setActiveSection('recaptcha-settings');
-      } else if (scrollPosition >= storageSettingsPosition) {
-        setActiveSection('storage-settings');
-      } else if (scrollPosition >= paymentSettingsPosition) {
-        setActiveSection('payment-settings');
-      } else if (scrollPosition >= workingDaysSettingsPosition) {
-        setActiveSection('working-days-settings');
-      } else if (scrollPosition >= emailSettingsPosition) {
-        setActiveSection('email-settings');
-      } else if (scrollPosition >= currencySettingsPosition) {
-        setActiveSection('currency-settings');
-
-      } else if (scrollPosition >= brandSettingsPosition) {
-        setActiveSection('brand-settings');
-      } else {
-        setActiveSection('system-settings');
-      }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
-
-    // Initial check for hash in URL
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const element = document.getElementById(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        setActiveSection(hash);
-      }
-    }
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  // Handle navigation click
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '');
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(id);
-    }
+    setActiveSection(id);
   };
 
   return (
@@ -362,8 +243,8 @@ export default function Settings() {
         {/* Main Content */}
         <div className="flex-1">
           {/* System Settings Section */}
-          {(auth.permissions?.includes('manage-system-settings') || auth.user?.type === 'superadmin' || auth.user?.type === 'company') && (
-            <section id="system-settings" ref={systemSettingsRef} className="mb-8">
+          {activeSection === 'system-settings' && (auth.permissions?.includes('manage-system-settings') || auth.user?.type === 'superadmin' || auth.user?.type === 'company') && (
+            <section id="system-settings" className="mb-8">
               <SystemSettings
                 settings={systemSettings}
                 timezones={timezones}
@@ -375,8 +256,8 @@ export default function Settings() {
           )}
 
           {/* Brand Settings Section */}
-          {(auth.permissions?.includes('manage-brand-settings') || auth.user?.type === 'superadmin') && (
-            <section id="brand-settings" ref={brandSettingsRef} className="mb-8">
+          {activeSection === 'brand-settings' && (auth.permissions?.includes('manage-brand-settings') || auth.user?.type === 'superadmin') && (
+            <section id="brand-settings" className="mb-8">
               <BrandSettings settings={systemSettings} />
             </section>
           )}
@@ -384,122 +265,122 @@ export default function Settings() {
 
 
           {/* Currency Settings Section */}
-          {(auth.permissions?.includes('manage-currency-settings') || auth.user?.type === 'superadmin' || auth.user?.type === 'company') && (
-            <section id="currency-settings" ref={currencySettingsRef} className="mb-8">
+          {activeSection === 'currency-settings' && (auth.permissions?.includes('manage-currency-settings') || auth.user?.type === 'superadmin' || auth.user?.type === 'company') && (
+            <section id="currency-settings" className="mb-8">
               <CurrencySettings />
             </section>
           )}
 
           {/* Email Settings Section */}
-          {(auth.permissions?.includes('manage-email-settings') || auth.user?.type === 'superadmin') && (
-            <section id="email-settings" ref={emailSettingsRef} className="mb-8">
+          {activeSection === 'email-settings' && (auth.permissions?.includes('manage-email-settings') || auth.user?.type === 'superadmin') && (
+            <section id="email-settings" className="mb-8">
               <EmailSettings />
             </section>
           )}
 
           {/* Working Days Settings Section */}
-          {auth.user?.type !== 'superadmin' && (auth.permissions?.includes('manage-working-days-settings') || auth.user?.type === 'company') && (
-            <section id="working-days-settings" ref={workingDaysSettingsRef} className="mb-8">
+          {activeSection === 'working-days-settings' && auth.user?.type !== 'superadmin' && (auth.permissions?.includes('manage-working-days-settings') || auth.user?.type === 'company') && (
+            <section id="working-days-settings" className="mb-8">
               <WorkingDaysSettings settings={systemSettings} />
             </section>
           )}
 
           {/* IP Restriction Settings Section */}
-          {auth.user?.type === 'company' && (auth.permissions?.includes('manage-ip-restriction-settings')) && (
-            <section id="ip-restriction-settings" ref={ipRestrictionSettingsRef} className="mb-8">
+          {activeSection === 'ip-restriction-settings' && auth.user?.type === 'company' && (auth.permissions?.includes('manage-ip-restriction-settings')) && (
+            <section id="ip-restriction-settings" className="mb-8">
               <IpRestrictionSettings />
             </section>
           )}
 
           {/* Zekto Settings Section */}
-          {auth.user?.type === 'company' && (auth.permissions?.includes('manage-biomatric-attedance-settings')) && (
-            <section id="zekto-settings" ref={zektoSettingsRef} className="mb-8">
+          {activeSection === 'zekto-settings' && auth.user?.type === 'company' && (auth.permissions?.includes('manage-biomatric-attedance-settings')) && (
+            <section id="zekto-settings" className="mb-8">
               <ZektoSettings settings={zektoSettings} />
             </section>
           )}
 
            {/* NOC Settings Section */}
-          {auth.user?.type === 'company' && (auth.permissions?.includes('manage-noc')) && (
-            <section id="noc-settings" ref={nocSettingsRef} className="mb-8">
+          {activeSection === 'noc-settings' && auth.user?.type === 'company' && (auth.permissions?.includes('manage-noc')) && (
+            <section id="noc-settings" className="mb-8">
               <NocSettings templates={nocTemplates} />
             </section>
           )}
 
           {/* Experience Certificate Settings Section */}
-          {auth.user?.type === 'company' && (auth.permissions?.includes('manage-experience-certificate')) && (
-            <section id="experience-certificate-settings" ref={experienceCertificateSettingsRef} className="mb-8">
+          {activeSection === 'experience-certificate-settings' && auth.user?.type === 'company' && (auth.permissions?.includes('manage-experience-certificate')) && (
+            <section id="experience-certificate-settings" className="mb-8">
               <ExperienceCertificateSettings templates={experienceCertificateTemplates} />
             </section>
           )}
 
           {/* Joining Letter Settings Section */}
-          {auth.user?.type === 'company' && (auth.permissions?.includes('manage-joining-letter')) && (
-            <section id="joining-letter-settings" ref={joiningLetterSettingsRef} className="mb-8">
+          {activeSection === 'joining-letter-settings' && auth.user?.type === 'company' && (auth.permissions?.includes('manage-joining-letter')) && (
+            <section id="joining-letter-settings" className="mb-8">
               <JoiningLetterSettings templates={joiningLetterTemplates} />
             </section>
           )}
 
 
           {/* Payment Settings Section */}
-          {(auth.permissions?.includes('manage-payment-settings') || auth.user?.type === 'superadmin') && (
-            <section id="payment-settings" ref={paymentSettingsRef} className="mb-8">
+          {activeSection === 'payment-settings' && (auth.permissions?.includes('manage-payment-settings') || auth.user?.type === 'superadmin') && (
+            <section id="payment-settings" className="mb-8">
               <PaymentSettings settings={paymentSettings} />
             </section>
           )}
 
           {/* Storage Settings Section */}
-          {(auth.permissions?.includes('manage-settings') && (auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas))) && (
-            <section id="storage-settings" ref={storageSettingsRef} className="mb-8">
+          {activeSection === 'storage-settings' && (auth.permissions?.includes('manage-settings') && (auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas))) && (
+            <section id="storage-settings" className="mb-8">
               <StorageSettings settings={systemSettings} />
             </section>
           )}
 
           {/* ReCaptcha Settings Section */}
-          {(auth.permissions?.includes('manage-recaptcha-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
-            <section id="recaptcha-settings" ref={recaptchaSettingsRef} className="mb-8">
+          {activeSection === 'recaptcha-settings' && (auth.permissions?.includes('manage-recaptcha-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
+            <section id="recaptcha-settings" className="mb-8">
               <RecaptchaSettings settings={systemSettings} />
             </section>
           )}
 
           {/* Chat GPT Settings Section */}
-          {(auth.permissions?.includes('manage-chatgpt-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
-            <section id="chatgpt-settings" ref={chatgptSettingsRef} className="mb-8">
+          {activeSection === 'chatgpt-settings' && (auth.permissions?.includes('manage-chatgpt-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
+            <section id="chatgpt-settings" className="mb-8">
               <ChatGptSettings settings={systemSettings} />
             </section>
           )}
 
           {/* Cookie Settings Section */}
-          {(auth.permissions?.includes('manage-cookie-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
-            <section id="cookie-settings" ref={cookieSettingsRef} className="mb-8">
+          {activeSection === 'cookie-settings' && (auth.permissions?.includes('manage-cookie-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
+            <section id="cookie-settings" className="mb-8">
               <CookieSettings settings={systemSettings} />
             </section>
           )}
 
           {/* SEO Settings Section */}
-          {(auth.permissions?.includes('manage-seo-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
-            <section id="seo-settings" ref={seoSettingsRef} className="mb-8">
+          {activeSection === 'seo-settings' && (auth.permissions?.includes('manage-seo-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
+            <section id="seo-settings" className="mb-8">
               <SeoSettings settings={systemSettings} />
             </section>
           )}
 
           {/* Cache Settings Section */}
-          {(auth.permissions?.includes('manage-cache-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
-            <section id="cache-settings" ref={cacheSettingsRef} className="mb-8">
+          {activeSection === 'cache-settings' && (auth.permissions?.includes('manage-cache-settings') || auth.user?.type === 'superadmin' || (auth.user?.type === 'company' && !isSaas)) && (
+            <section id="cache-settings" className="mb-8">
               <CacheSettings cacheSize={cacheSize} />
             </section>
           )}
 
           {/* Google Calendar Settings Section */}
-          {/* {(auth.permissions?.includes('settings') || auth.user?.type === 'company') && (
-            <section id="google-calendar-settings" ref={googleCalendarSettingsRef} className="mb-8">
+          {/* {activeSection === 'google-calendar-settings' && (auth.permissions?.includes('settings') || auth.user?.type === 'company') && (
+            <section id="google-calendar-settings" className="mb-8">
               <GoogleCalendarSettings settings={systemSettings} />
             </section>
           )} */}
 
          
           {/* Webhook Settings Section */}
-          {/* {(auth.permissions?.includes('manage-webhook-settings') && auth.user?.type !== 'superadmin') && (
-            <section id="webhook-settings" ref={webhookSettingsRef} className="mb-8">
+          {/* {activeSection === 'webhook-settings' && (auth.permissions?.includes('manage-webhook-settings') && auth.user?.type !== 'superadmin') && (
+            <section id="webhook-settings" className="mb-8">
               <WebhookSettings webhooks={webhooks} />
             </section>
           )} */}

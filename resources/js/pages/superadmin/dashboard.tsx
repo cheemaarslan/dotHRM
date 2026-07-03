@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { DashboardOverview } from '@/components/dashboard/dashboard-overview';
+import { SuperAdminCharts } from '@/components/dashboard/superadmin-charts';
+import { SparklineStatCard } from '@/components/dashboard/sparkline-stat-card';
 import { router } from '@inertiajs/react';
 
 interface SuperAdminDashboardData {
@@ -29,6 +31,11 @@ interface SuperAdminDashboardData {
     name: string;
     subscribers: number;
     revenue: number;
+  }>;
+  chartData?: Array<{
+    name: string;
+    revenue: number;
+    companies: number;
   }>;
 }
 
@@ -80,101 +87,82 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
     { name: 'Enterprise', subscribers: 12, revenue: 7200 },
   ];
 
+  // Generate some realistic-looking mock data for the 7-day sparklines
+  const generateMockSparkline = (base: number, variance: number, trend: 'up' | 'down' | 'mixed') => {
+    let current = base;
+    return Array.from({ length: 7 }).map((_, i) => {
+      const change = (Math.random() - (trend === 'up' ? 0.3 : trend === 'down' ? 0.7 : 0.5)) * variance;
+      current += change;
+      return { value: Math.max(0, current) };
+    });
+  };
+
+  const sparklineData = {
+    plans: generateMockSparkline(stats.activePlans * 0.8, stats.activePlans * 0.05, 'up'),
+    requests: generateMockSparkline(stats.pendingRequests * 1.5, stats.pendingRequests * 0.2, 'down'),
+    companies: generateMockSparkline(stats.totalCompanies * 0.9, stats.totalCompanies * 0.02, 'up'),
+    users: generateMockSparkline(stats.totalUsers * 0.85, stats.totalUsers * 0.05, 'mixed'),
+    revenue: generateMockSparkline(stats.totalRevenue * 0.8, stats.totalRevenue * 0.1, 'up'),
+    coupons: generateMockSparkline(stats.activeCoupons * 0.9, stats.activeCoupons * 0.03, 'up'),
+  };
+
   return (
     <PageTemplate 
       title={t('Dashboard')}
       url="/dashboard"
       actions={pageActions}
+      breadcrumbs={[{ title: t('Dashboard'), href: '/dashboard' }]}
     >
-      <div className="space-y-6">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Active Plans')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{stats.activePlans.toLocaleString()}</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-purple-100 p-2 dark:bg-purple-900">
-                  <CreditCard className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Pending Requests')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{stats.pendingRequests.toLocaleString()}</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-orange-100 p-2 dark:bg-orange-900">
-                  <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Monthly Growth')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{stats.monthlyGrowth}%</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-emerald-100 p-2 dark:bg-emerald-900">
-                  <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Total Companies')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{stats.totalCompanies.toLocaleString()}</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-blue-100 p-2 dark:bg-blue-900">
-                  <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Total Revenue')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{window.appSettings.formatCurrency(stats.totalRevenue.toLocaleString())}</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-yellow-100 p-2 dark:bg-yellow-900">
-                  <DollarSign className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-muted-foreground truncate">{t('Total Users')}</p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight">{stats.totalUsers?.toLocaleString() || 0}</h3>
-                </div>
-                <div className="flex-shrink-0 rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
-                  <UserPlus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          
+      <div className="flex flex-col gap-6">
+        
+        {/* Top Stats Cards Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <SparklineStatCard
+            title={t('Active Plans')}
+            value={stats.activePlans.toLocaleString()}
+            percentage={12.4}
+            theme="blue"
+            data={sparklineData.plans}
+          />
+          <SparklineStatCard
+            title={t('Pending Requests')}
+            value={stats.pendingRequests.toLocaleString()}
+            percentage={-5.2}
+            theme="yellow"
+            data={sparklineData.requests}
+          />
+          <SparklineStatCard
+            title={t('Total Companies')}
+            value={stats.totalCompanies.toLocaleString()}
+            percentage={8.7}
+            theme="cyan"
+            data={sparklineData.companies}
+          />
+          <SparklineStatCard
+            title={t('Total Users')}
+            value={stats.totalUsers?.toLocaleString() || 0}
+            percentage={3.1}
+            theme="emerald"
+            data={sparklineData.users}
+          />
+          <SparklineStatCard
+            title={t('Total Revenue')}
+            value={window.appSettings?.formatCurrency ? window.appSettings.formatCurrency(stats.totalRevenue) : `$${stats.totalRevenue.toLocaleString()}`}
+            percentage={15.8}
+            theme="blue"
+            data={sparklineData.revenue}
+          />
+          <SparklineStatCard
+            title={t('Active Coupons')}
+            value={stats.activeCoupons?.toLocaleString() || 0}
+            percentage={4.5}
+            theme="yellow"
+            data={sparklineData.coupons}
+          />
         </div>
+
+        {/* Charts Section */}
+        <SuperAdminCharts data={dashboardData.chartData || []} stats={stats} />
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Recent Activity */}

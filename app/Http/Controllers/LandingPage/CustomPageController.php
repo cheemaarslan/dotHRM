@@ -115,6 +115,16 @@ class CustomPageController extends Controller
         $plans = collect();
         if (isSaas()) {
             $plans = \App\Models\Plan::where('is_plan_enable', 'on')->get()->map(function ($plan) {
+                $features = [];
+                if ($plan->enable_custdomain === 'on')
+                    $features[] = 'Custom Domain';
+                if ($plan->enable_custsubdomain === 'on')
+                    $features[] = 'Subdomain';
+                if ($plan->pwa_business === 'on')
+                    $features[] = 'PWA';
+                if ($plan->enable_chatgpt === 'on')
+                    $features[] = 'AI Integration';
+
                 return [
                     'id'            => $plan->id,
                     'name'          => $plan->name,
@@ -122,7 +132,12 @@ class CustomPageController extends Controller
                     'yearly_price'  => $plan->yearly_price,
                     'duration'      => $plan->duration,
                     'description'   => $plan->description,
-                    'features'      => [],
+                    'features'      => $features,
+                    'stats'         => [
+                        'employees' => $plan->max_employees,
+                        'users'     => $plan->max_users,
+                        'storage'   => $plan->storage_limit . ' GB',
+                    ],
                     'is_plan_enable' => $plan->is_plan_enable,
                     'is_popular'    => false,
                 ];

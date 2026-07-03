@@ -164,49 +164,10 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     });
   };
 
-  // Smart scroll functionality
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100; // Add offset for better UX
-      
-      // Get positions of each section
-      const profilePosition = profileRef.current?.offsetTop || 0;
-      const passwordPosition = passwordRef.current?.offsetTop || 0;
-      
-      // Determine active section based on scroll position
-      if (scrollPosition >= passwordPosition) {
-        setActiveSection('password');
-      } else {
-        setActiveSection('profile');
-      }
-    };
-    
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
-    
-    // Initial check for hash in URL
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const element = document.getElementById(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        setActiveSection(hash);
-      }
-    }
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   // Handle navigation click
   const handleNavClick = (href: string) => {
     const id = href.replace('#', '');
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(id);
-    }
+    setActiveSection(id);
   };
 
   return (
@@ -239,6 +200,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         {/* Content */}
         <div className="flex-1">
           {/* Profile Section */}
+          {activeSection === 'profile' && (
           <section id="profile" ref={profileRef} className="mb-16">
             <Card className="shadow-sm">
               <CardHeader>
@@ -339,8 +301,10 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
               </CardContent>
             </Card>
           </section>
+          )}
 
           {/* Password Section */}
+          {activeSection === 'password' && (
           <section id="password" ref={passwordRef} className="mb-16">
             <Card className="shadow-sm">
               <CardHeader>
@@ -400,6 +364,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
               </CardContent>
             </Card>
           </section>
+          )}
         </div>
       </div>
     </PageTemplate>

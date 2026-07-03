@@ -179,7 +179,7 @@ export default function EditCustomPage() {
   const { t } = useTranslation();
   const { page, globalSettings } = usePage<PageProps>().props;
 
-  const [activeTab, setActiveTab] = useState<'content' | 'sections'>('content');
+  const [activeTab, setActiveTab] = useState<'sections' | 'content'>('sections');
   const [formData, setFormData] = useState({
     title: page.title,
     content: page.content || '',
@@ -299,18 +299,6 @@ export default function EditCustomPage() {
             <div className="flex border-b -mx-6 px-6">
               <button
                 type="button"
-                onClick={() => setActiveTab('content')}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'content'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <FileText className="h-4 w-4" />
-                {t('Content')}
-              </button>
-              <button
-                type="button"
                 onClick={() => setActiveTab('sections')}
                 className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'sections'
@@ -325,6 +313,18 @@ export default function EditCustomPage() {
                     {formData.sections.length}
                   </Badge>
                 )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('content')}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === 'content'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <FileText className="h-4 w-4" />
+                {t('Content')}
               </button>
             </div>
           </CardHeader>

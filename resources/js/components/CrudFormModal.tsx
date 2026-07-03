@@ -16,6 +16,10 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import MediaPicker from '@/components/MediaPicker';
 import DependentDropdown from '@/components/DependentDropdown';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import TimeKeeper from '@axelixlabs/react-timepicker';
+import { Clock } from 'lucide-react';
+
 
 interface CrudFormModalProps {
   isOpen: boolean;
@@ -76,6 +80,62 @@ function DateInputField({ field, dateValue, handleChange, errors, mode }: {
         readOnly={field.readOnly}
       />
     </div>
+  );
+}
+
+// Standalone time input with Material UI TimePicker
+function TimeInputField({ field, timeValue, handleChange, errors, mode }: {
+  field: FormField;
+  timeValue: string;
+  handleChange: (name: string, value: any) => void;
+  errors: Record<string, string>;
+  mode: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Format the time value from 24h to 12h for display
+  const displayTime = () => {
+    if (!timeValue) return '';
+    
+    // timeValue is usually HH:mm or HH:mm:ss
+    const parts = timeValue.split(':');
+    if (parts.length >= 2) {
+      let hours = parseInt(parts[0], 10);
+      const minutes = parts[1];
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+    return timeValue;
+  };
+
+  if (mode === 'view') {
+    return (
+      <div className="p-2 border rounded-md bg-gray-50 flex items-center justify-between">
+        <span>{displayTime() || '-'}</span>
+        <Clock className="w-4 h-4 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger type="button" className={`relative cursor-pointer flex items-center justify-between border-input h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] hover:bg-muted/50 md:text-sm ${errors[field.name] ? 'border-red-500' : ''} ${field.disabled ? 'pointer-events-none opacity-50' : ''}`}>
+        <span className={timeValue ? '' : 'text-muted-foreground'}>
+          {displayTime() || field.placeholder || '--:--'}
+        </span>
+        <Clock className="w-4 h-4 text-muted-foreground" />
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0 border-none shadow-2xl rounded-xl overflow-hidden" align="start">
+        <TimeKeeper
+          time={timeValue || '12:00'}
+          onChange={(newTime) => handleChange(field.name, newTime.formatted24)}
+          onDoneClick={() => setIsOpen(false)}
+          switchToMinuteOnHourSelect
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -320,26 +380,13 @@ export function CrudFormModal({
 
       case 'time':
         return (
-          <div
-            className="cursor-pointer"
-            onClick={(e) => {
-              const input = (e.currentTarget as HTMLElement).querySelector('input');
-              try { (input as any)?.showPicker?.(); } catch { input?.focus(); }
-            }}
-          >
-            <Input
-              id={field.name}
-              name={field.name}
-              type="time"
-              placeholder={field.placeholder}
-              value={formData[field.name] || ''}
-              onChange={(e) => handleChange(field.name, e.target.value)}
-              required={field.required}
-              className={`cursor-pointer${errors[field.name] ? ' border-red-500' : ''}`}
-              disabled={field.disabled || mode === 'view'}
-              readOnly={field.readOnly}
-            />
-          </div>
+          <TimeInputField
+            field={field}
+            timeValue={formData[field.name] || ''}
+            handleChange={handleChange}
+            errors={errors}
+            mode={mode}
+          />
         );
 
       case 'date':

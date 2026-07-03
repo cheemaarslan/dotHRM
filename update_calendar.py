@@ -1,11 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import sys
+
+file_path = r'e:\bitlogicx\hrms\dotHRM\resources\js\pages\calendar\index.tsx'
+
+content = """import React, { useState, useRef, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useTranslation } from 'react-i18next';
-import { router } from '@inertiajs/react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Coffee, Palmtree, UserMinus, Calendar as CalendarIcon, Clock, Users, Plus, LayoutGrid, List } from 'lucide-react';
@@ -110,11 +113,7 @@ export default function CalendarIndex({ events: initialEvents, canManage }: Cale
         {/* Left Sidebar - Filters & Controls */}
         <div className="w-full lg:w-72 flex flex-col gap-6 flex-shrink-0">
           {canManage && (
-            <Button 
-              className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all font-semibold" 
-              size="lg"
-              onClick={() => router.get(route('meetings.meetings.index'))}
-            >
+            <Button className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all font-semibold" size="lg">
               <Plus className="mr-2 h-5 w-5" />
               {t('New Event')}
             </Button>
@@ -307,3 +306,9 @@ export default function CalendarIndex({ events: initialEvents, canManage }: Cale
     </PageTemplate>
   );
 }
+"""
+
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Updated index.tsx")

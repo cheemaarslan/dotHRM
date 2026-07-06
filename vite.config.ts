@@ -55,13 +55,17 @@ export default defineConfig({
         },
     },
     build: {
+        emptyOutDir: true,
         rollupOptions: {
             output: {
                 manualChunks: {
                     vendor: ['react', 'react-dom'],
                     ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
                     utils: ['date-fns', 'clsx']
-                }
+                },
+                entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+                chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+                assetFileNames: `assets/[name]-[hash]-${Date.now()}.[ext]`,
             },
         },
         assetsDir: 'assets',

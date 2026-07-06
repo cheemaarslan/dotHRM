@@ -1,0 +1,1 @@
+import{j as n}from"./ui-dD_SI-4j-1783322321501.js";import{e as o}from"./app-0-V-b99M-1783322321501.js";function m({message:r,className:t="",...e}){return r?n.jsx("p",{...e,className:o("text-sm text-red-600 dark:text-red-400",t),children:r}):null}export{m as I};
